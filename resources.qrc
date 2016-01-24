@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/map">
+        <file>map_tank.tmx</file>
+        <file>tmw_desert_spacing.png</file>
+    </qresource>
+    <qresource prefix="/tank"/>
+    <qresource prefix="/buttons">
+        <file>image/arrow_blue.png</file>
+        <file>image/arrow_silver.png</file>
+        <file>image/tank_yellow.png</file>
+    </qresource>
+</RCC>
