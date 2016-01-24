@@ -17,13 +17,19 @@ SOURCES += main.cpp\
     gameengine.cpp \
     tmxfiles.cpp \
     tank.cpp \
-    tankcontrolerbutton.cpp
+    tankcontrolerbutton.cpp \
+    game_map.cpp \
+    game_tile.cpp \
+    game_tiled_set.cpp
 
 HEADERS  += mainwindow.h \
     gameengine.h \
     tmxfiles.h \
     tank.h \
-    tankcontrolerbutton.h
+    tankcontrolerbutton.h \
+    game_map.h \
+    game_tile.h \
+    game_tiled_set.h
 
 FORMS    += mainwindow.ui
 
