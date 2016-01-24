@@ -3,3 +3,6 @@
 
 # Ada Library Information
 *.ali
+
+# pro user
+*.user
