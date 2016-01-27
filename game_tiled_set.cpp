@@ -1,5 +1,7 @@
 #include "game_tiled_set.h"
 
+#include <QtMath>
+
 GameTiledSet::GameTiledSet()
 {
 
@@ -12,7 +14,7 @@ GameTiledSet::GameTiledSet(QString filename,
 {
     load(filename);
     this->margin = margin;
-    this->space = space;
+    this->spacing = space;
     this->tilesize = tilesize;
 }
 
@@ -28,14 +30,12 @@ GameTile *GameTiledSet::getTile(int id)
 
 void GameTiledSet::GenerateTiles()
 {
-    QPixmap pmx = TilesetImage();
-    int margin = map->tileset.margin;
-    int spacing = map->tileset.spacing;
-    int tx = map->tilewidth;
-    int ty = map->tileheight;
-
-    int px = margin + (spacing + tx)*x;
-    int py = margin + (spacing + ty)*y;
-    QPixmap tile = pmx.copy(px, py, tx, ty);
-    return tile;
+    int tx = tilesize.width();
+    int ty = tilesize.height();
+    for(int y=margin; y<this->height(); y+=(spacing + ty) ) {
+        for(int x=margin; x<this->width(); x+=(spacing + tx) ) {
+            GameTile tile;
+            tile.addImage(this, QRect(x, y, tx, ty));
+        }
+    }
 }

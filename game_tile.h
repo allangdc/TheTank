@@ -4,25 +4,34 @@
 #include <QObject>
 #include <QGraphicsPixmapItem>
 #include <QVector>
+#include <QPair>
 #include <QString>
+#include <QPropertyAnimation>
 
 #include "tmxfiles.h"
 
-class GameTile : public QObject
+class GameTile : public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
+    Q_PROPERTY(int show_image READ IndexImage WRITE ShowImage)
 public:
-    GameTile(Tile tile, QObject *parent = 0);
+    GameTile(int id=0);
     GameTile(const GameTile &tile);
     virtual ~GameTile();
-    void setImage(QPixmap *pixmap, QRect region);
-    void addImage(QPixmap *pixmap, QRect region, qreal duration);
-    QGraphicsPixmapItem *Image(int index = 0);
+    void addImage(QPixmap *pixmap, QRect region, qreal duration=0);
+    void ShowImage(int index = 0);
+    int IndexImage();
+    qreal Duration(int index);
+    void RunAnimation();
+    int TotalImages();
+    void setProbability(qreal prob);
+    qreal Probability();
 private:
     int id;
     qreal probability;
-    QVector<QGraphicsPixmapItem *> images;
-    QVector<qreal> durations;
+    QVector< QPair<QPixmap, qreal> > images;
+    int current_image_index;
+    QPropertyAnimation *animation;
 };
 
 #endif // GAMETILE_H

@@ -1,40 +1,32 @@
 #include "game_tile.h"
 
-GameTile::GameTile(Tile tile, QObject *parent)
-    : QObject(parent)
+GameTile::GameTile(int id)
+    : QObject(),
+      QGraphicsPixmapItem(),
+      id(id),
+      probability(0),
+      current_image_index(-1),
+      animation(NULL)
 {
 
 }
 
 GameTile::GameTile(const GameTile &tile)
+    : GameTile()
 {
     id = tile.id;
     probability = tile.probability;
-    durations = tile.durations;
-    QVector<QGraphicsPixmapItem *>::const_iterator it;
-    for(it = tile.images.begin(); it != tile.images.end(); it++) {
-        QGraphicsPixmapItem *graphic = new QGraphicsPixmapItem(*it);
-        images.push_back(graphic);
-    }
+    images = tile.images;
+    current_image_index = tile.current_image_index;
+    if(tile.animation)
+        animation = new QPropertyAnimation(tile.animation->targetObject(),
+                                           tile.animation->propertyName());
 }
 
 GameTile::~GameTile()
 {
-    QVector<QGraphicsPixmapItem *>::const_iterator it;
-    for(it = images.begin(); it != images.end(); it++) {
-        QGraphicsPixmapItem *graphic = *it;
-        delete graphic;
-    }
-}
-
-void GameTile::setImage(QPixmap *pixmap, QRect region)
-{
-    images.clear();
-    durations.clear();
-    QPixmap pxm = pixmap->copy(region);
-    QGraphicsPixmapItem *graphic = new QGraphicsPixmapItem(pxm);
-    images.push_back(graphic);
-    durations.push_back(-1);
+    if(animation)
+        delete animation;
 }
 
 void GameTile::addImage(QPixmap *pixmap,
@@ -42,16 +34,52 @@ void GameTile::addImage(QPixmap *pixmap,
                         qreal duration)
 {
     QPixmap pxm = pixmap->copy(region);
-    QGraphicsPixmapItem *graphic = new QGraphicsPixmapItem(pxm);
-    images.push_back(graphic);
-    durations.push_back(duration);
+    images.push_back(QPair<QPixmap,qreal>(pxm, duration));
+    if(images.size() == 1) {
+        ShowImage(0);
+    }
 }
 
-QGraphicsPixmapItem *GameTile::Image(int index)
+void GameTile::ShowImage(int index)
 {
-    if (images.size()>0)
-        return images.at(index);
-    else
-        return NULL;
+    current_image_index = index;
+    this->setPixmap(images.at(index).first);
 }
 
+int GameTile::IndexImage()
+{
+    return current_image_index;
+}
+
+qreal GameTile::Duration(int index)
+{
+    return images.at(index).second;
+}
+
+void GameTile::RunAnimation()
+{
+    if(!animation) {
+        animation = new QPropertyAnimation(this, "show_image");
+    }
+    qreal sum = 0;
+    for(int i=0; i<TotalImages(); i++) {
+        sum += Duration(i);
+    }
+    animation->setDuration(sum);
+    animation->start();
+}
+
+int GameTile::TotalImages()
+{
+    return images.size();
+}
+
+void GameTile::setProbability(qreal prob)
+{
+    probability = prob;
+}
+
+qreal GameTile::Probability()
+{
+    return probability;
+}

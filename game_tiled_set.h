@@ -16,7 +16,7 @@ public:
     GameTile *getTile(int id);
 private:
     int margin;
-    int space;
+    int spacing;
     QSize tilesize;
     void GenerateTiles();
     QVector<GameTile> tiles;
