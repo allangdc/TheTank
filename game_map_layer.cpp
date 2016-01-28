@@ -46,10 +46,12 @@ void GameMapLayer::setMatrixTile(GameTile *tile, int x, int y)
 {
     QVector< QPair<int, GameTile*> > *vy = &(map_id[y]);
     (*vy)[x].second = tile;
-    qreal px, py;
-    px = x * tile->pixmap().width();
-    py = y * tile->pixmap().height();
-    tile->setPos(px, py);
+    if(tile) {
+        qreal px, py;
+        px = x * tile->pixmap().width();
+        py = y * tile->pixmap().height();
+        tile->setPos(px, py);
+    }
 }
 
 void GameMapLayer::setTile(GameTile *tile, int item)

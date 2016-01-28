@@ -48,6 +48,7 @@ public:
     void LoadLayer(QString name, QSize map_tile_size);
     GameTiledSet *TileSet();
     void LoadFullMap(int layer = 0);
+    void LoadRectMap(QRect region, int layer = 0);
 private:
     QVector<GameMapLayer *> layers;
     GameTiledSet *tile_set;

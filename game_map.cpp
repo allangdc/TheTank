@@ -181,3 +181,32 @@ void GameMap::LoadFullMap(int layer)
         this->addItem(tile);
     }
 }
+
+void GameMap::LoadRectMap(QRect region, int layer)
+{
+    GameTiledSet *set = TileSet();
+    int maxi = Dimension(layer).width() * Dimension(layer).height();
+    for(int i=0; i<maxi; i++) {
+        int x, y;
+        y = i / Dimension(layer).width();
+        x = i - y*Dimension(layer).width();
+        QPair<int, GameTile *> pair = this->Item(i, layer);
+        if(region.contains(x, y)) {
+            if(!pair.second) {
+                int id = Item(i, layer).first - set->FirstGid();
+                GameTile *tile = new GameTile(set->getTile(id));
+                setTile(tile, i, layer);
+                this->addItem(tile);
+            }
+        } else {
+            if(pair.second) {
+                GameTile *tile = pair.second;
+                this->removeItem(tile);
+                delete tile;
+                setTile(NULL, i, layer);
+            }
+        }
+    }
+}
+
+
