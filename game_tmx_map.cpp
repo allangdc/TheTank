@@ -102,7 +102,6 @@ bool GameTMXMap::LoadLayersParameters(QDomElement *element)
         for(int i=0; i<dt.childNodes().size(); i++) {
             QDomElement tile = dt.childNodes().at(i).toElement();
             int id = tile.attribute("gid").toInt();
-            //data.push_back(id);
             map->setValue(id, i++, layer_id);
         }
     }
