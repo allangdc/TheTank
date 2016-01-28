@@ -20,7 +20,9 @@ SOURCES += main.cpp\
     tankcontrolerbutton.cpp \
     game_map.cpp \
     game_tile.cpp \
-    game_tiled_set.cpp
+    game_tiled_set.cpp \
+    game_tmx_map.cpp \
+    game_map_layer.cpp
 
 HEADERS  += mainwindow.h \
     gameengine.h \
@@ -29,7 +31,9 @@ HEADERS  += mainwindow.h \
     tankcontrolerbutton.h \
     game_map.h \
     game_tile.h \
-    game_tiled_set.h
+    game_tiled_set.h \
+    game_tmx_map.h \
+    game_map_layer.h
 
 FORMS    += mainwindow.ui
 

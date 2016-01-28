@@ -10,12 +10,17 @@ GameTiledSet::GameTiledSet()
 GameTiledSet::GameTiledSet(QString filename,
                            int margin,
                            int space,
-                           QSize tilesize)
+                           QSize tilesize,
+                           int firstgid,
+                           int tilecount)
 {
     load(filename);
     this->margin = margin;
     this->spacing = space;
     this->tilesize = tilesize;
+    this->firstgid = firstgid;
+    this->tilecount = tilecount;
+    GenerateTiles();
 }
 
 GameTile *GameTiledSet::getTile(int id)
@@ -23,9 +28,14 @@ GameTile *GameTiledSet::getTile(int id)
     if(id >= tiles.size()) {
         return NULL;
     } else {
-        GameTile *gtile = &tiles[id];
+        GameTile *gtile = &(tiles[id]);
         return gtile;
     }
+}
+
+int GameTiledSet::TotalTiles()
+{
+    return tiles.size();
 }
 
 void GameTiledSet::GenerateTiles()

@@ -12,13 +12,18 @@ public:
     explicit GameTiledSet(QString filename,
                           int margin,
                           int space,
-                          QSize tilesize);
+                          QSize tilesize,
+                          int firstgid,
+                          int tilecount);
     GameTile *getTile(int id);
+    int TotalTiles();
 private:
+    void GenerateTiles();
     int margin;
     int spacing;
     QSize tilesize;
-    void GenerateTiles();
+    int firstgid;
+    int tilecount;
     QVector<GameTile> tiles;
 };
 
