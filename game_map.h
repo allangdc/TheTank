@@ -20,7 +20,7 @@ public:
     GameMapLayer *addDimension(int x, int y);
     GameMapLayer *addDimension();
     int TotalLayers();
-    QSize Dimension(int layer);
+    QSize Dimension(int layer = 0);
     void setMatrixValue(int value, int x, int y, int layer = 0);
     void setValue(int value, int item, int layer = 0);
     void setMatrixTile(GameTile *tile, int x, int y, int layer = 0);
@@ -39,7 +39,7 @@ public:
     int NextObjectID();
     QSize TileSize();
     QSize MapTileSize();
-    void LoadTileSet(QString filename,
+    GameTiledSet *LoadTileSet(QString name,
                      int margin,
                      int spacing,
                      QSize tilesize,
@@ -47,6 +47,7 @@ public:
                      int tilecount);
     void LoadLayer(QString name, QSize map_tile_size);
     GameTiledSet *TileSet();
+    void LoadFullMap(int layer = 0);
 private:
     QVector<GameMapLayer *> layers;
     GameTiledSet *tile_set;

@@ -2,6 +2,7 @@
 
 #include <QFile>
 #include <QDomDocument>
+#include <QDebug>
 
 #include "game_map.h"
 
@@ -39,7 +40,7 @@ bool GameTMXMap::LoadMapParameters()
     map->setRenderOrder(root.attribute("renderorder"));
     int width = root.attribute("width").toInt();
     int height = root.attribute("height").toInt();
-    map->setTileSize(QSize(width, height));
+    map->setMapTileSize(QSize(width, height));
     int tilewidth = root.attribute("tilewidth").toInt();
     int tileheight = root.attribute("tileheight").toInt();
     map->setTileSize(QSize(tilewidth, tileheight));
@@ -50,9 +51,12 @@ bool GameTMXMap::LoadMapParameters()
             if(!LoadTileSetParameters(&e))
                 return false;
         } else if(e.tagName() == "layer") {
-            LoadLayersParameters(&e);
+            if(!LoadLayersParameters(&e))
+                return false;
         }
     }
+
+    return true;
 }
 
 bool GameTMXMap::LoadTileSetParameters(QDomElement *element)
@@ -64,25 +68,30 @@ bool GameTMXMap::LoadTileSetParameters(QDomElement *element)
     int tilecount = element->attribute("tilecount").toInt();
     int tilewidth = element->attribute("tilewidth").toInt();
     int tileheight = element->attribute("tileheight").toInt();
-    map->LoadTileSet(name,
-                     margin,
-                     spacing,
-                     QSize(tilewidth, tileheight),
-                     firstgid,
-                     tilecount);
+    GameTiledSet *tiledset = map->LoadTileSet(name,
+                                             margin,
+                                             spacing,
+                                             QSize(tilewidth, tileheight),
+                                             firstgid,
+                                             tilecount);
 
     for(int i=0; i<element->childNodes().size(); i++) {
         QDomElement e = element->childNodes().at(i).toElement();
-        if(e.tagName() == "tile") {
+        if(e.tagName() == "image") {
+            QString filename = e.attribute("source");
+            tiledset->LoadFilename(filename);
+        } else if(e.tagName() == "tile") {
             if(!LoadTileParameters(&e))
                 return false;
         }
     }
+    return true;
 }
 
 bool GameTMXMap::LoadTileParameters(QDomElement *element)
 {
     //@TODO: Implementar edição de parametros de um GameTile
+    return true;
 }
 
 bool GameTMXMap::LoadLayersParameters(QDomElement *element)
@@ -90,6 +99,7 @@ bool GameTMXMap::LoadLayersParameters(QDomElement *element)
     GameMapLayer *layer = map->addDimension();
     int layer_id = map->TotalLayers()-1;
     QDomElement dt = element->firstChildElement("data").toElement();
+    qDebug() << element->firstChildElement("data").isNull();
     if(dt.attribute("encoding") == "csv") {
         QString str = dt.text();
         str.replace("\n", "");
@@ -110,6 +120,7 @@ bool GameTMXMap::LoadLayersParameters(QDomElement *element)
     //int width = element->attribute("width").toInt();
     //int height = element->attribute("height").toInt();
     //layer->setDimension(width, height);
+    return true;
 }
 
 

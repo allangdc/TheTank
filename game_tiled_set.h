@@ -9,14 +9,17 @@ class GameTiledSet : public QPixmap
 {
 public:
     GameTiledSet();
-    explicit GameTiledSet(QString filename,
+    virtual ~GameTiledSet();
+    explicit GameTiledSet(QString name,
                           int margin,
                           int space,
                           QSize tilesize,
                           int firstgid,
                           int tilecount);
+    void LoadFilename(QString filename);
     GameTile *getTile(int id);
     int TotalTiles();
+    int FirstGid();
 private:
     void GenerateTiles();
     int margin;
@@ -24,7 +27,8 @@ private:
     QSize tilesize;
     int firstgid;
     int tilecount;
-    QVector<GameTile> tiles;
+    QString name;
+    QVector<GameTile *> tiles;
 };
 
 #endif // GAMETILEDSET_H

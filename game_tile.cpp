@@ -11,8 +11,28 @@ GameTile::GameTile(int id)
 
 }
 
+GameTile::GameTile(const GameTile *tile)
+    : QObject(),
+      QGraphicsPixmapItem(),
+      id(id),
+      probability(0),
+      current_image_index(-1),
+      animation(NULL)
+{
+    if(tile) {
+        id = tile->id;
+        probability = tile->probability;
+        images = tile->images;
+        current_image_index = tile->current_image_index;
+        if(tile->animation)
+            animation = new QPropertyAnimation(tile->animation->targetObject(),
+                                               tile->animation->propertyName());
+    }
+}
+
 GameTile::GameTile(const GameTile &tile)
-    : GameTile()
+    : QObject(),
+      QGraphicsPixmapItem()
 {
     id = tile.id;
     probability = tile.probability;
@@ -66,6 +86,7 @@ void GameTile::RunAnimation()
         sum += Duration(i);
     }
     animation->setDuration(sum);
+    animation->setLoopCount(-1);
     animation->start();
 }
 

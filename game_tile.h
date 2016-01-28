@@ -16,6 +16,7 @@ class GameTile : public QObject, public QGraphicsPixmapItem
     Q_PROPERTY(int show_image READ IndexImage WRITE ShowImage)
 public:
     GameTile(int id=0);
+    GameTile(const GameTile *tile);
     GameTile(const GameTile &tile);
     virtual ~GameTile();
     void addImage(QPixmap *pixmap, QRect region, qreal duration=0);

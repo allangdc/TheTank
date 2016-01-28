@@ -7,7 +7,10 @@
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include <QVector>
-#include "tmxfiles.h"
+//#include "tmxfiles.h"
+
+#include "game_tmx_map.h"
+#include "game_map.h"
 
 class Tank;
 class QWidget;
@@ -19,14 +22,14 @@ public:
     GameEngine(QWidget *parent);
     void setCamera(QGraphicsView *camera);
     void InitScene(QString tmxfile);
-    void LoadFullMap();
 
     void CreateTank();
     Tank *MainTank();
 private:
     QGraphicsView *camera;
-    QGraphicsScene *scene;
-    TMXFiles *tmx;
+    //QGraphicsScene *scene;
+    GameMap *scene;
+    //TMXFiles *tmx;
     QVector<Tank *> tanks;
 };
 

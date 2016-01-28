@@ -5,7 +5,7 @@
 GameMapLayer::GameMapLayer(GameMap *map)
     : QObject()
 {
-
+    this->map = map;
 }
 
 void GameMapLayer::setName(QString name)
@@ -38,7 +38,7 @@ void GameMapLayer::setValue(int value, int item)
 {
     int x, y;
     y = item / Dimension().width();
-    x = y*Dimension().width() + Dimension().height();
+    x = item - y*Dimension().width();
     setMatrixValue(value, x, y);
 }
 
@@ -46,13 +46,17 @@ void GameMapLayer::setMatrixTile(GameTile *tile, int x, int y)
 {
     QVector< QPair<int, GameTile*> > *vy = &(map_id[y]);
     (*vy)[x].second = tile;
+    qreal px, py;
+    px = x * tile->pixmap().width();
+    py = y * tile->pixmap().height();
+    tile->setPos(px, py);
 }
 
 void GameMapLayer::setTile(GameTile *tile, int item)
 {
     int x, y;
     y = item / Dimension().width();
-    x = y*Dimension().width() + Dimension().height();
+    x = item - y*Dimension().width();
     setMatrixTile(tile, x, y);
 }
 
@@ -66,7 +70,7 @@ QPair<int, GameTile *> GameMapLayer::Item(int item)
 {
     int x, y;
     y = item / Dimension().width();
-    x = y*Dimension().width() + Dimension().height();
+    x = item - y*Dimension().width();
     return Matrix(x, y);
 }
 

@@ -2,6 +2,7 @@
 
 #include <QGraphicsPixmapItem>
 #include <QPixmap>
+#include <QDebug>
 
 #include "tank.h"
 #include "mainwindow.h"
@@ -9,51 +10,27 @@
 GameEngine::GameEngine(QWidget *parent)
     : QObject(parent),
       camera(NULL),
-      scene(NULL),
-      tmx(NULL)
+      scene(NULL)
 {
 }
 
 void GameEngine::setCamera(QGraphicsView *camera)
 {
     this->camera = camera;
-    camera->scale(3,3);
+    camera->scale(0.5, 0.5);
 }
 
 void GameEngine::InitScene(QString tmxfile)
 {
-    tmx = new TMXFiles();
-    tmx->ReadFiles(tmxfile);
+    scene = new GameMap();
+    GameTMXMap *tmx = new GameTMXMap(scene);
+    qDebug() << "RESULT=" << tmx->LoadTMXFile(tmxfile);
+    scene->LoadFullMap();
 
-    scene = new QGraphicsScene();
     camera->setScene(scene);
 
-    LoadFullMap();
-
     CreateTank();
     CreateTank();
-}
-
-void GameEngine::LoadFullMap()
-{
-    QSize mapsz = tmx->MapSize();
-    scene->setSceneRect(QRect(QPoint(0,0),mapsz));
-
-    int x=0, y=0;
-    for(int h = 0; h < mapsz.height(); h += tmx->TiledSize().height()) {
-        for(int w = 0; w < mapsz.width(); w += tmx->TiledSize().width()) {
-            int id = tmx->MatrixID(0, x++, y);
-            if(id>=0) {
-                QGraphicsPixmapItem *gpmap = new QGraphicsPixmapItem();
-                QPixmap pmap = tmx->TileImageByID(0, id);
-                gpmap->setPixmap(pmap);
-                scene->addItem(gpmap);
-                gpmap->setPos(w, h);
-            }
-        }
-        y++;
-        x=0;
-    }
 }
 
 void GameEngine::CreateTank()

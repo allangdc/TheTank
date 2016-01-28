@@ -31,6 +31,7 @@ private:
     QVector< QVector< QPair<int, GameTile*> > > map_id;
     QString name;
     QString encoding;
+    GameMap *map;
 };
 
 #endif // GAMEMAPLAYER_H

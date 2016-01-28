@@ -1,5 +1,7 @@
 #include "game_map.h"
 
+#include <QDebug>
+
 GameMap::GameMap(QObject *parent)
     : QGraphicsScene(parent),
       tile_set(NULL)
@@ -145,7 +147,7 @@ QString GameMap::RenderOrder()
     return render_order;
 }
 
-void GameMap::LoadTileSet(QString filename,
+GameTiledSet *GameMap::LoadTileSet(QString name,
                           int margin,
                           int spacing,
                           QSize tilesize,
@@ -154,15 +156,32 @@ void GameMap::LoadTileSet(QString filename,
 {
     if(tile_set)
         delete tile_set;
-    tile_set = new GameTiledSet(filename,
+    tile_set = new GameTiledSet(name,
                                 margin,
                                 spacing,
                                 tilesize,
                                 firstgid,
                                 tilecount);
+    return tile_set;
 }
 
 GameTiledSet *GameMap::TileSet()
 {
     return tile_set;
+}
+
+void GameMap::LoadFullMap(int layer)
+{
+    GameTiledSet *set = TileSet();
+    int maxi = Dimension(layer).width() * Dimension(layer).height();
+    for(int i=0; i<maxi; i++) {
+        int id = Item(i, layer).first - set->FirstGid();
+        qDebug() << "AAA=" << id;
+        if(id == -1)
+            int z=0;
+        GameTile *tile = new GameTile(set->getTile(id));
+        qDebug() << "BBB=" << id;
+        setTile(tile, i, layer);
+        this->addItem(tile);
+    }
 }

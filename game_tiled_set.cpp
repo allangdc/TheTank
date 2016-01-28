@@ -7,28 +7,39 @@ GameTiledSet::GameTiledSet()
 
 }
 
-GameTiledSet::GameTiledSet(QString filename,
+GameTiledSet::~GameTiledSet()
+{
+    for(int i=0; i<tiles.size(); i++)
+        delete tiles.at(i);
+}
+
+GameTiledSet::GameTiledSet(QString name,
                            int margin,
                            int space,
                            QSize tilesize,
                            int firstgid,
                            int tilecount)
 {
-    load(filename);
+    this->name = name;
     this->margin = margin;
     this->spacing = space;
     this->tilesize = tilesize;
     this->firstgid = firstgid;
     this->tilecount = tilecount;
+}
+
+void GameTiledSet::LoadFilename(QString filename)
+{
+    load(filename);
     GenerateTiles();
 }
 
 GameTile *GameTiledSet::getTile(int id)
 {
-    if(id >= tiles.size()) {
+    if(id >= tiles.size() || id < 0) {
         return NULL;
     } else {
-        GameTile *gtile = &(tiles[id]);
+        GameTile *gtile = tiles.at(id);
         return gtile;
     }
 }
@@ -38,14 +49,20 @@ int GameTiledSet::TotalTiles()
     return tiles.size();
 }
 
+int GameTiledSet::FirstGid()
+{
+    return firstgid;
+}
+
 void GameTiledSet::GenerateTiles()
 {
     int tx = tilesize.width();
     int ty = tilesize.height();
     for(int y=margin; y<this->height(); y+=(spacing + ty) ) {
         for(int x=margin; x<this->width(); x+=(spacing + tx) ) {
-            GameTile tile;
-            tile.addImage(this, QRect(x, y, tx, ty));
+            GameTile *tile = new GameTile();
+            tile->addImage(this, QRect(x, y, tx, ty));
+            tiles.push_back(tile);
         }
     }
 }
