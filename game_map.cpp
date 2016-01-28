@@ -18,10 +18,31 @@ GameMap::~GameMap()
 void GameMap::setDimension(int x, int y, int total_layers)
 {
     for(int i=0; i<total_layers; i++) {
-        GameMapLayer *layer = new GameMapLayer(this);
-        layer->setDimension(x, y);
-        layers.push_back(layer);
+        addDimension(x, y);
     }
+}
+
+void GameMap::setDimension(int total_layers)
+{
+    for(int i=0; i<total_layers; i++) {
+        addDimension();
+    }
+}
+
+GameMapLayer *GameMap::addDimension(int x, int y)
+{
+    GameMapLayer *layer = new GameMapLayer(this);
+    layer->setDimension(x, y);
+    layers.push_back(layer);
+    return layer;
+}
+
+GameMapLayer *GameMap::addDimension()
+{
+    GameMapLayer *layer = new GameMapLayer(this);
+    layer->setDimension(MapTileSize().width(), MapTileSize().height());
+    layers.push_back(layer);
+    return layer;
 }
 
 int GameMap::TotalLayers()
@@ -39,14 +60,29 @@ void GameMap::setMatrixValue(int value, int x, int y, int layer)
     layers.at(layer)->setMatrixValue(value, x, y);
 }
 
+void GameMap::setValue(int value, int item, int layer)
+{
+    layers.at(layer)->setValue(value, item);
+}
+
 void GameMap::setMatrixTile(GameTile *tile, int x, int y, int layer)
 {
     layers.at(layer)->setMatrixTile(tile, x, y);
 }
 
+void GameMap::setTile(GameTile *tile, int item, int layer)
+{
+    layers.at(layer)->setTile(tile, item);
+}
+
 QPair<int, GameTile *> GameMap::Matrix(int x, int y, int layer)
 {
     return layers.at(layer)->Matrix(x, y);
+}
+
+QPair<int, GameTile *> GameMap::Item(int item, int layer)
+{
+    return layers.at(layer)->Item(item);
 }
 
 void GameMap::setVersion(qreal version)
@@ -74,6 +110,11 @@ void GameMap::setTileSize(QSize size)
     this->tile_size = size;
 }
 
+void GameMap::setMapTileSize(QSize size)
+{
+    map_tile_size = size;
+}
+
 int GameMap::NextObjectID()
 {
     return next_object_id;
@@ -82,6 +123,11 @@ int GameMap::NextObjectID()
 QSize GameMap::TileSize()
 {
     return tile_size;
+}
+
+QSize GameMap::MapTileSize()
+{
+    return map_tile_size;
 }
 
 qreal GameMap::Version()

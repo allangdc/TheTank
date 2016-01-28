@@ -17,6 +17,7 @@ private:
     bool LoadMapParameters();
     bool LoadTileSetParameters(QDomElement *element);
     bool LoadTileParameters(QDomElement *element);
+    bool LoadLayersParameters(QDomElement *element);
     GameMap *map;
     QDomElement root;
 };

@@ -39,6 +39,7 @@ bool GameTMXMap::LoadMapParameters()
     map->setRenderOrder(root.attribute("renderorder"));
     int width = root.attribute("width").toInt();
     int height = root.attribute("height").toInt();
+    map->setTileSize(QSize(width, height));
     int tilewidth = root.attribute("tilewidth").toInt();
     int tileheight = root.attribute("tileheight").toInt();
     map->setTileSize(QSize(tilewidth, tileheight));
@@ -49,9 +50,7 @@ bool GameTMXMap::LoadMapParameters()
             if(!LoadTileSetParameters(&e))
                 return false;
         } else if(e.tagName() == "layer") {
-//            Layer l;
-//            l.Load(&e);
-//            layers.push_back(l);
+            LoadLayersParameters(&e);
         }
     }
 }
@@ -84,6 +83,34 @@ bool GameTMXMap::LoadTileSetParameters(QDomElement *element)
 bool GameTMXMap::LoadTileParameters(QDomElement *element)
 {
     //@TODO: Implementar edição de parametros de um GameTile
+}
+
+bool GameTMXMap::LoadLayersParameters(QDomElement *element)
+{
+    GameMapLayer *layer = map->addDimension();
+    int layer_id = map->TotalLayers()-1;
+    QDomElement dt = element->firstChildElement("data").toElement();
+    if(dt.attribute("encoding") == "csv") {
+        QString str = dt.text();
+        str.replace("\n", "");
+        QStringList list = str.split(",");
+        int i=0;
+        foreach(QString s, list) {
+            map->setValue(s.toInt(), i++, layer_id);
+        }
+    } else if(!dt.hasAttribute("encoding")) {
+        for(int i=0; i<dt.childNodes().size(); i++) {
+            QDomElement tile = dt.childNodes().at(i).toElement();
+            int id = tile.attribute("gid").toInt();
+            //data.push_back(id);
+            map->setValue(id, i++, layer_id);
+        }
+    }
+
+    layer->setName(element->attribute("name"));
+    //int width = element->attribute("width").toInt();
+    //int height = element->attribute("height").toInt();
+    //layer->setDimension(width, height);
 }
 
 

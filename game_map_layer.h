@@ -19,8 +19,11 @@ public:
     void setEncoding(QString encoding);
     void setDimension(int x, int y);
     void setMatrixValue(int value, int x, int y);
+    void setValue(int value, int item);
     void setMatrixTile(GameTile *tile, int x, int y);
+    void setTile(GameTile *tile, int item);
     QPair<int, GameTile*> Matrix(int x, int y);
+    QPair<int, GameTile*> Item(int item);
     QString Name();
     QString Encoding();
     QSize Dimension();

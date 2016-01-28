@@ -34,16 +34,40 @@ void GameMapLayer::setMatrixValue(int value, int x, int y)
     (*vy)[x].first = value;
 }
 
+void GameMapLayer::setValue(int value, int item)
+{
+    int x, y;
+    y = item / Dimension().width();
+    x = y*Dimension().width() + Dimension().height();
+    setMatrixValue(value, x, y);
+}
+
 void GameMapLayer::setMatrixTile(GameTile *tile, int x, int y)
 {
     QVector< QPair<int, GameTile*> > *vy = &(map_id[y]);
     (*vy)[x].second = tile;
 }
 
+void GameMapLayer::setTile(GameTile *tile, int item)
+{
+    int x, y;
+    y = item / Dimension().width();
+    x = y*Dimension().width() + Dimension().height();
+    setMatrixTile(tile, x, y);
+}
+
 QPair<int, GameTile *> GameMapLayer::Matrix(int x, int y)
 {
     QVector< QPair<int, GameTile*> > *vy = &(map_id[y]);
     return (*vy).at(x);
+}
+
+QPair<int, GameTile *> GameMapLayer::Item(int item)
+{
+    int x, y;
+    y = item / Dimension().width();
+    x = y*Dimension().width() + Dimension().height();
+    return Matrix(x, y);
 }
 
 QString GameMapLayer::Name()
