@@ -17,7 +17,7 @@ GameEngine::GameEngine(QWidget *parent)
 void GameEngine::setCamera(QGraphicsView *camera)
 {
     this->camera = camera;
-    camera->scale(0.5, 0.5);
+    camera->scale(2, 2);
 }
 
 void GameEngine::InitScene(QString tmxfile)

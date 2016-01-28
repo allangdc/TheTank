@@ -58,9 +58,10 @@ void GameTiledSet::GenerateTiles()
 {
     int tx = tilesize.width();
     int ty = tilesize.height();
+    int id = 0;
     for(int y=margin; y<this->height(); y+=(spacing + ty) ) {
         for(int x=margin; x<this->width(); x+=(spacing + tx) ) {
-            GameTile *tile = new GameTile();
+            GameTile *tile = new GameTile(id++);
             tile->addImage(this, QRect(x, y, tx, ty));
             tiles.push_back(tile);
         }

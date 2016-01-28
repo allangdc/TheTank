@@ -24,6 +24,7 @@ GameTile::GameTile(const GameTile *tile)
         probability = tile->probability;
         images = tile->images;
         current_image_index = tile->current_image_index;
+        this->setPixmap(tile->pixmap());
         if(tile->animation)
             animation = new QPropertyAnimation(tile->animation->targetObject(),
                                                tile->animation->propertyName());
@@ -38,6 +39,7 @@ GameTile::GameTile(const GameTile &tile)
     probability = tile.probability;
     images = tile.images;
     current_image_index = tile.current_image_index;
+    this->setPixmap(tile.pixmap());
     if(tile.animation)
         animation = new QPropertyAnimation(tile.animation->targetObject(),
                                            tile.animation->propertyName());
@@ -63,7 +65,7 @@ void GameTile::addImage(QPixmap *pixmap,
 void GameTile::ShowImage(int index)
 {
     current_image_index = index;
-    this->setPixmap(images.at(index).first);
+    QGraphicsPixmapItem::setPixmap(images.at(index).first);
 }
 
 int GameTile::IndexImage()

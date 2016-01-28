@@ -176,11 +176,7 @@ void GameMap::LoadFullMap(int layer)
     int maxi = Dimension(layer).width() * Dimension(layer).height();
     for(int i=0; i<maxi; i++) {
         int id = Item(i, layer).first - set->FirstGid();
-        qDebug() << "AAA=" << id;
-        if(id == -1)
-            int z=0;
         GameTile *tile = new GameTile(set->getTile(id));
-        qDebug() << "BBB=" << id;
         setTile(tile, i, layer);
         this->addItem(tile);
     }
