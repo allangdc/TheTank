@@ -2,7 +2,7 @@
 
 #include <QPropertyAnimation>
 
-#include "tmxfiles.h"
+#include "game_tile_colision.h"
 
 GameTile::GameTile(int id)
     : QObject(),
@@ -10,18 +10,14 @@ GameTile::GameTile(int id)
       id(id),
       probability(0),
       current_image_index(-1),
-      animation(NULL)
+      animation(NULL),
+      colision(NULL)
 {
 
 }
 
 GameTile::GameTile(const GameTile *tile)
-    : QObject(),
-      QGraphicsPixmapItem(),
-      id(id),
-      probability(0),
-      current_image_index(-1),
-      animation(NULL)
+    : GameTile(0)
 {
     if(tile) {
         id = tile->id;
@@ -32,12 +28,13 @@ GameTile::GameTile(const GameTile *tile)
         if(tile->animation)
             animation = new QPropertyAnimation(tile->animation->targetObject(),
                                                tile->animation->propertyName());
+        if(tile->colision)
+            colision = new GameTileColision(tile->colision);
     }
 }
 
 GameTile::GameTile(const GameTile &tile)
-    : QObject(),
-      QGraphicsPixmapItem()
+    : GameTile(0)
 {
     id = tile.id;
     probability = tile.probability;
@@ -47,12 +44,16 @@ GameTile::GameTile(const GameTile &tile)
     if(tile.animation)
         animation = new QPropertyAnimation(tile.animation->targetObject(),
                                            tile.animation->propertyName());
+    if(tile.colision)
+        colision = new GameTileColision(tile.colision);
 }
 
 GameTile::~GameTile()
 {
     if(animation)
         delete animation;
+    if(colision)
+        delete colision;
 }
 
 void GameTile::addImage(QPixmap *pixmap,
@@ -109,4 +110,21 @@ void GameTile::setProbability(qreal prob)
 qreal GameTile::Probability()
 {
     return probability;
+}
+
+void GameTile::setColision(GameTileColision *colision)
+{
+    this->colision = colision;
+}
+
+GameTileColision *GameTile::Colision()
+{
+    return colision;
+}
+
+void GameTile::UpdateTileColisionPos()
+{
+    int x = this->pos().x() + colision->pos().x();
+    int y = this->pos().y() + colision->pos().y();
+    colision->setPos(x, y);
 }

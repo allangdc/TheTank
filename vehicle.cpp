@@ -26,6 +26,19 @@ Vehicle::Vehicle(GameMap *map)
     this->setRotation(90+45);
 }
 
+Vehicle::~Vehicle()
+{
+    if(panimation) {
+        delete panimation;
+    }
+    if(time_animation) {
+        delete time_animation;
+    }
+    if(animation) {
+        delete animation;
+    }
+}
+
 void Vehicle::Move(int action)
 {
     if(action >= 0)
@@ -96,7 +109,7 @@ void Vehicle::MoveUp()
     animation->setTimeLine(time_animation);
     animation->setPosAt(0, pos());
     animation->setPosAt(1, NextPosition());
-    time_animation->setUpdateInterval(1000/120);
+    time_animation->setUpdateInterval(20);
     time_animation->setEasingCurve(QEasingCurve::Linear);
     time_animation->start();
 }

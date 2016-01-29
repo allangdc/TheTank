@@ -5,27 +5,26 @@
 #include <QString>
 #include <QVector>
 
-class Tank;
 class QWidget;
 class GameMap;
-class QGraphicsView;
+class GameCamera;
+class Vehicle;
 
 class GameEngine: public QObject
 {
     Q_OBJECT
 public:
     GameEngine(QWidget *parent);
-    void setCamera(QGraphicsView *camera);
+    void setCamera(GameCamera *camera);
+    GameCamera *Camera();
     void InitScene(QString tmxfile);
 
     void CreateTank();
-    Tank *MainTank();
-    QGraphicsView *camera;
-    GameMap *scene;
+    Vehicle *MainTank();
 private:
-//    QGraphicsView *camera;
-//    GameMap *scene;
-    QVector<Tank *> tanks;
+    GameCamera *camera;
+    GameMap *scene;
+    QVector<Vehicle *> vehicles;
 };
 
 #endif // GAMEENGINE_H

@@ -3,29 +3,33 @@
 #include <QGraphicsPixmapItem>
 #include <QPixmap>
 #include <QDebug>
-#include <QGraphicsView>
 
 #include "game_tmx_map.h"
 #include "game_map.h"
-#include "tank.h"
 #include "mainwindow.h"
 #include "vehicle.h"
+#include "game_camera.h"
 
 GameEngine::GameEngine(QWidget *parent)
     : QObject(parent),
       camera(NULL),
       scene(NULL)
 {
+
 }
 
-void GameEngine::setCamera(QGraphicsView *camera)
+void GameEngine::setCamera(GameCamera *camera)
 {
     this->camera = camera;
-    camera->scale(2, 2);
 
     camera->setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
     camera->setCacheMode(QGraphicsView::CacheBackground);
     camera->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+}
+
+GameCamera *GameEngine::Camera()
+{
+    return camera;
 }
 
 void GameEngine::InitScene(QString tmxfile)
@@ -38,7 +42,6 @@ void GameEngine::InitScene(QString tmxfile)
     camera->setScene(scene);
 
     CreateTank();
-    //CreateTank();
 }
 
 void GameEngine::CreateTank()
@@ -52,14 +55,15 @@ void GameEngine::CreateTank()
 //    scene->addItem(tank);
 //    tank->setPos(100, 100);
     Vehicle *v = new Vehicle(scene);
+    camera->setCentralizeObject(v);
     connect(mainwindow, SIGNAL(MoveTankAction(int)), v, SLOT(MoveVehicle(int)));
     scene->addItem(v);
     camera->centerOn(v);
 }
 
-Tank *GameEngine::MainTank()
+Vehicle *GameEngine::MainTank()
 {
-    return tanks.at(0);
+    return vehicles.at(0);
 }
 
 

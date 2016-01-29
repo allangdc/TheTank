@@ -6,7 +6,9 @@
 
 #include "game_map.h"
 #include "game_tiled_set.h"
+#include "game_tile.h"
 #include "game_map_layer.h"
+#include "game_tile_colision.h"
 
 GameTMXMap::GameTMXMap(GameMap *map) : QObject()
 {
@@ -92,6 +94,27 @@ bool GameTMXMap::LoadTileSetParameters(QDomElement *element)
 
 bool GameTMXMap::LoadTileParameters(QDomElement *element)
 {
+    int tile_id = element->attribute("id").toInt();
+    if(!element->firstChildElement("objectgroup").isNull()) {
+        GameTile *tile = map->TileSet()->getTile(tile_id);
+        QDomElement obj_group = element->firstChildElement("objectgroup");
+        QString draworder = obj_group.attribute("draworder");
+        QDomElement obj = obj_group.firstChildElement("object");
+        int id = obj.attribute("id").toInt();
+        qreal x = obj.attribute("x").toFloat();
+        qreal y = obj.attribute("y").toFloat();
+        QDomElement pol = obj.firstChildElement("polygon");
+        QString points = pol.attribute("points");
+        if(!obj.firstChildElement("polygon").isNull()) {
+            GameTileColision *colision = new GameTileColision(points);
+            colision->setDrawOrder(draworder);
+            colision->setPoint(x, y);
+            colision->setID(id);
+            tile->setColision(colision);
+        } else {
+            return false;
+        }
+    }
     //@TODO: Implementar edição de parametros de um GameTile
     return true;
 }

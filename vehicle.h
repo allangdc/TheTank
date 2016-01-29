@@ -18,6 +18,7 @@ public:
         STOP = 0, MOVE_UP, ROTATE_LEFT, ROTATE_RIGHT, MOVE_LEFT, MOVE_RIGHT
     };
     explicit Vehicle(GameMap *map);
+    virtual ~Vehicle();
     void Move(int action = -1);
 public slots:
     void FinishTimeAnimation();

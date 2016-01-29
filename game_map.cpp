@@ -1,8 +1,11 @@
 #include "game_map.h"
 
 #include <QDebug>
+#include <QPixmap>
+#include <QPainter>
 
 #include "game_tiled_set.h"
+#include "game_tile_colision.h"
 #include "game_map_layer.h"
 #include "game_tile.h"
 
@@ -183,6 +186,16 @@ void GameMap::LoadFullMap(int layer)
         GameTile *tile = new GameTile(set->getTile(id));
         setTile(tile, i, layer);
         this->addItem(tile);
+        GameTileColision *colision = tile->Colision();
+        if(colision) {
+            tile->UpdateTileColisionPos();
+            QPixmap pxm = tile->pixmap();
+            QPainter p(&pxm);
+            p.setPen(Qt::red);
+            p.drawPolygon(colision->polygon());
+            tile->setPixmap(pxm);
+            this->addItem(colision);
+        }
     }
 }
 

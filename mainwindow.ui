@@ -16,7 +16,7 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QGraphicsView" name="graphicsView">
+     <widget class="GameCamera" name="graphicsView">
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
       </property>
@@ -80,6 +80,11 @@
    <class>TankControlerButton</class>
    <extends>QLabel</extends>
    <header>tankcontrolerbutton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>GameCamera</class>
+   <extends>QGraphicsView</extends>
+   <header>game_camera.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

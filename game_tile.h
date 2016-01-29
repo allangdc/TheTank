@@ -8,6 +8,7 @@
 #include <QString>
 
 class QPropertyAnimation;
+class GameTileColision;
 
 class GameTile : public QObject, public QGraphicsPixmapItem
 {
@@ -26,12 +27,16 @@ public:
     int TotalImages();
     void setProbability(qreal prob);
     qreal Probability();
+    void setColision(GameTileColision *colision);
+    GameTileColision *Colision();
+    void UpdateTileColisionPos();
 private:
     int id;
     qreal probability;
     QVector< QPair<QPixmap, qreal> > images;
     int current_image_index;
     QPropertyAnimation *animation;
+    GameTileColision *colision;
 };
 
 #endif // GAMETILE_H

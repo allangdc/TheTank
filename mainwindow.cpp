@@ -5,6 +5,7 @@
 #include <QMouseEvent>
 #include <QDebug>
 #include <QApplication>
+#include <QPropertyAnimation>
 
 #include "gameengine.h"
 #include "game_map.h"
@@ -15,10 +16,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
-    engine = new GameEngine(this);
-    engine->setCamera(ui->graphicsView);
-    engine->InitScene(":/map/map_tank.tmx");
 
     setAttribute(Qt::WA_AcceptTouchEvents);
     installEventFilter(ui->btn_left);
@@ -35,6 +32,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->btn_left->RotateImage(90);
     ui->btn_right->RotateImage(-90);
     ui->btn_up->RotateImage(180);
+
+    engine = new GameEngine(this);
+    engine->setCamera(ui->graphicsView);
+    engine->InitScene(":/map/map_tank.tmx");
 }
 
 MainWindow::~MainWindow()
@@ -87,7 +88,6 @@ void MainWindow::keyReleaseEvent(QKeyEvent *e)
 
 void MainWindow::resizeEvent(QResizeEvent *e)
 {
-    engine->camera->centerOn(0,0);
 }
 
 

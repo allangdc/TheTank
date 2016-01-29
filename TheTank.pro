@@ -22,11 +22,12 @@ SOURCES += main.cpp\
     game_tiled_set.cpp \
     game_tmx_map.cpp \
     game_map_layer.cpp \
-    vehicle.cpp
+    vehicle.cpp \
+    game_camera.cpp \
+    game_tile_colision.cpp
 
 HEADERS  += mainwindow.h \
     gameengine.h \
-    tmxfiles.h \
     tank.h \
     tankcontrolerbutton.h \
     game_map.h \
@@ -34,7 +35,9 @@ HEADERS  += mainwindow.h \
     game_tiled_set.h \
     game_tmx_map.h \
     game_map_layer.h \
-    vehicle.h
+    vehicle.h \
+    game_camera.h \
+    game_tile_colision.h
 
 FORMS    += mainwindow.ui
 
