@@ -1,5 +1,9 @@
 #include "game_tile.h"
 
+#include <QPropertyAnimation>
+
+#include "tmxfiles.h"
+
 GameTile::GameTile(int id)
     : QObject(),
       QGraphicsPixmapItem(),

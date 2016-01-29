@@ -3,7 +3,10 @@
 
 #include <QPixmap>
 #include <QVector>
-#include "game_tile.h"
+#include <QString>
+#include <QSize>
+
+class GameTile;
 
 class GameTiledSet : public QPixmap
 {

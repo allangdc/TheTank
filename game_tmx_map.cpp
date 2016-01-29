@@ -5,6 +5,8 @@
 #include <QDebug>
 
 #include "game_map.h"
+#include "game_tiled_set.h"
+#include "game_map_layer.h"
 
 GameTMXMap::GameTMXMap(GameMap *map) : QObject()
 {

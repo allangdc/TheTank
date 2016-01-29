@@ -7,15 +7,14 @@
 #include <QApplication>
 
 #include "gameengine.h"
-#include "tank.h"
+#include "game_map.h"
+#include "vehicle.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
-    //setFocusPolicy(Qt::StrongFocus);
 
     engine = new GameEngine(this);
     engine->setCamera(ui->graphicsView);
@@ -45,27 +44,27 @@ MainWindow::~MainWindow()
 
 void MainWindow::ClickLeft()
 {
-    emit MoveTankAction(Tank::LEFT);
+    emit MoveTankAction(Vehicle::ROTATE_LEFT);
 }
 
 void MainWindow::ReleaseLeftRight()
 {
-    emit MoveTankAction(Tank::STOP_ROTATION);
+    emit MoveTankAction(Vehicle::STOP);
 }
 
 void MainWindow::ClickRight()
 {
-    emit MoveTankAction(Tank::RIGHT);
+    emit MoveTankAction(Vehicle::ROTATE_RIGHT);
 }
 
 void MainWindow::ClickUp()
 {
-    emit MoveTankAction(Tank::FORWARD);
+    emit MoveTankAction(Vehicle::MOVE_UP);
 }
 
 void MainWindow::ReleaseUp()
 {
-    emit MoveTankAction(Tank::STOP_FORWARD);
+    emit MoveTankAction(Vehicle::STOP);
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *e)
@@ -84,6 +83,11 @@ void MainWindow::keyReleaseEvent(QKeyEvent *e)
         ReleaseLeftRight();
     else if(e->key() == Qt::Key_Up)
         ReleaseUp();
+}
+
+void MainWindow::resizeEvent(QResizeEvent *e)
+{
+    engine->camera->centerOn(0,0);
 }
 
 

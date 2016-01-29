@@ -3,17 +3,12 @@
 
 #include <QObject>
 #include <QString>
-
-#include <QGraphicsView>
-#include <QGraphicsScene>
 #include <QVector>
-//#include "tmxfiles.h"
-
-#include "game_tmx_map.h"
-#include "game_map.h"
 
 class Tank;
 class QWidget;
+class GameMap;
+class QGraphicsView;
 
 class GameEngine: public QObject
 {
@@ -25,11 +20,11 @@ public:
 
     void CreateTank();
     Tank *MainTank();
-private:
     QGraphicsView *camera;
-    //QGraphicsScene *scene;
     GameMap *scene;
-    //TMXFiles *tmx;
+private:
+//    QGraphicsView *camera;
+//    GameMap *scene;
     QVector<Tank *> tanks;
 };
 

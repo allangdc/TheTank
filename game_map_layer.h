@@ -6,9 +6,8 @@
 #include <QVector>
 #include <QString>
 
-#include "game_tile.h"
-
 class GameMap;
+class GameTile;
 
 class GameMapLayer : public QObject
 {

@@ -15,14 +15,14 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     gameengine.cpp \
-    tmxfiles.cpp \
     tank.cpp \
     tankcontrolerbutton.cpp \
     game_map.cpp \
     game_tile.cpp \
     game_tiled_set.cpp \
     game_tmx_map.cpp \
-    game_map_layer.cpp
+    game_map_layer.cpp \
+    vehicle.cpp
 
 HEADERS  += mainwindow.h \
     gameengine.h \
@@ -33,7 +33,8 @@ HEADERS  += mainwindow.h \
     game_tile.h \
     game_tiled_set.h \
     game_tmx_map.h \
-    game_map_layer.h
+    game_map_layer.h \
+    vehicle.h
 
 FORMS    += mainwindow.ui
 

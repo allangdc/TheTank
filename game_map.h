@@ -6,8 +6,9 @@
 #include <QString>
 #include <QSize>
 
-#include "game_tiled_set.h"
-#include "game_map_layer.h"
+class GameTiledSet;
+class GameMapLayer;
+class GameTile;
 
 class GameMap : public QGraphicsScene
 {

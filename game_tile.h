@@ -6,9 +6,8 @@
 #include <QVector>
 #include <QPair>
 #include <QString>
-#include <QPropertyAnimation>
 
-#include "tmxfiles.h"
+class QPropertyAnimation;
 
 class GameTile : public QObject, public QGraphicsPixmapItem
 {

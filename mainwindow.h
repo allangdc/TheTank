@@ -28,6 +28,7 @@ signals:
 protected:
     void keyPressEvent(QKeyEvent *e);
     void keyReleaseEvent(QKeyEvent *e);
+    void resizeEvent(QResizeEvent *e);
 private:
     Ui::MainWindow *ui;
     GameEngine *engine;

@@ -2,6 +2,8 @@
 
 #include <QtMath>
 
+#include "game_tile.h"
+
 GameTiledSet::GameTiledSet()
 {
 

@@ -2,6 +2,10 @@
 
 #include <QDebug>
 
+#include "game_tiled_set.h"
+#include "game_map_layer.h"
+#include "game_tile.h"
+
 GameMap::GameMap(QObject *parent)
     : QGraphicsScene(parent),
       tile_set(NULL)
