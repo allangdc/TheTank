@@ -4,7 +4,9 @@
 #include <QPolygonF>
 #include <QDebug>
 
-GameTileColision::GameTileColision(QString list_points) : QGraphicsPolygonItem()
+GameTileColision::GameTileColision(QString list_points)
+    : QGraphicsPolygonItem(),
+      code(12345)
 {
     QStringList list = list_points.split(" ");
     QStringList::iterator it;
@@ -18,12 +20,18 @@ GameTileColision::GameTileColision(QString list_points) : QGraphicsPolygonItem()
 }
 
 GameTileColision::GameTileColision(const GameTileColision *c)
-    :QGraphicsPolygonItem(c->polygon())
+    :QGraphicsPolygonItem(c->polygon()),
+      code(12345)
 {
     this->draw_order = c->draw_order;
     this->id = c->id;
     this->point = c->point;
     this->setPolygon(c->polygon());
+}
+
+GameTileColision::~GameTileColision()
+{
+    code = 0;
 }
 
 void GameTileColision::setDrawOrder(QString value)

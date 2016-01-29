@@ -6,6 +6,7 @@
 #include <QGraphicsItemAnimation>
 #include <QPropertyAnimation>
 #include <QTimeLine>
+#include <QStack>
 
 #include "game_map.h"
 
@@ -25,6 +26,8 @@ public slots:
     void MoveTimeAnimation();
 
     void MoveVehicle(int action);
+signals:
+    //void ImMoving();
 private:
     void StopMove();
     void MoveUp();
@@ -36,6 +39,9 @@ private:
     QGraphicsItemAnimation *animation;
     QPropertyAnimation *panimation;
     QTimeLine *time_animation;
+    QPointF last_pos;
+    qreal last_angle;
+    QStack< QPair<QPointF, qreal> > position;
 };
 
 

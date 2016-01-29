@@ -5,6 +5,8 @@
 #include <QtMath>
 #include <QGraphicsView>
 
+#include "game_tile_colision.h"
+
 Vehicle::Vehicle(GameMap *map)
     : QObject(map),
       QGraphicsPixmapItem(),
@@ -67,8 +69,25 @@ void Vehicle::FinishTimeAnimation()
 
 void Vehicle::MoveTimeAnimation()
 {
+    position.push(QPair<QPointF, qreal>(pos(), rotation()));
     QGraphicsView *view = map->views().at(0);
     view->centerOn(this);
+    //emit ImMoving();
+
+    QList<QGraphicsItem *> colliding = this->collidingItems();
+    qDebug() << "Size:" << colliding.size();
+    QList<QGraphicsItem *>::iterator it;
+    for(it = colliding.begin(); it != colliding.end(); it++) {
+        GameTileColision *p = reinterpret_cast<GameTileColision *>(*it);
+        if(p->code == 12345) {
+            QPair<QPointF, qreal> last = position.pop();
+            this->setPos(last.first);
+            this->setRotation(last.second);
+        }
+    }
+
+    if(position.size() > 50)
+        position.pop();
 }
 
 void Vehicle::MoveVehicle(int action)

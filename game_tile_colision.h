@@ -9,12 +9,14 @@ class GameTileColision : public QGraphicsPolygonItem
 public:
     explicit GameTileColision(QString list_points);
     GameTileColision(const GameTileColision *c);
+    virtual ~GameTileColision();
     void setDrawOrder(QString value);
     void setID(int value);
     void setPoint(qreal x, qreal y);
     QString DrawOrder();
     int ID();
     QPointF Point();
+    int code;
 private:
     QString draw_order;
     int id;
