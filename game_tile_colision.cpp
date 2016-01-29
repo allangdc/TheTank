@@ -4,10 +4,11 @@
 #include <QPolygonF>
 #include <QDebug>
 
-GameTileColision::GameTileColision(QString list_points)
+GameTileColision::GameTileColision(QString list_points, GameTile *tile)
     : QGraphicsPolygonItem(),
-      code(12345)
+      code(COLLISION_CODE)
 {
+    this->tile = tile;
     QStringList list = list_points.split(" ");
     QStringList::iterator it;
     QPolygonF pol;
@@ -21,8 +22,9 @@ GameTileColision::GameTileColision(QString list_points)
 
 GameTileColision::GameTileColision(const GameTileColision *c)
     :QGraphicsPolygonItem(c->polygon()),
-      code(12345)
+      code(COLLISION_CODE)
 {
+    this->tile = c->tile;
     this->draw_order = c->draw_order;
     this->id = c->id;
     this->point = c->point;
@@ -70,4 +72,28 @@ int GameTileColision::ID()
 QPointF GameTileColision::Point()
 {
     return point;
+}
+
+GameTile *GameTileColision::Tile()
+{
+    return tile;
+}
+
+QRectF GameTileColision::Rect()
+{
+    QPolygonF::iterator it;
+    QPolygonF pol = this->polygon();
+    QPointF max(-999,-999), min(999,999);
+    for(it = pol.begin(); it != pol.end(); it++) {
+        if(it->x() > max.x())
+            max.setX(it->x());
+        if(it->x() < min.x())
+            min.setX(it->x());
+
+        if(it->y() > max.y())
+            max.setY(it->y());
+        if(it->y() < min.y())
+            min.setY(it->y());
+    }
+    return QRectF(min, max);
 }

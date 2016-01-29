@@ -106,7 +106,7 @@ bool GameTMXMap::LoadTileParameters(QDomElement *element)
         QDomElement pol = obj.firstChildElement("polygon");
         QString points = pol.attribute("points");
         if(!obj.firstChildElement("polygon").isNull()) {
-            GameTileColision *colision = new GameTileColision(points);
+            GameTileColision *colision = new GameTileColision(points, tile);
             colision->setDrawOrder(draworder);
             colision->setPoint(x, y);
             colision->setID(id);

@@ -6,6 +6,7 @@
 #include <QGraphicsView>
 
 #include "game_tile_colision.h"
+#include "game_tile.h"
 
 Vehicle::Vehicle(GameMap *map)
     : QObject(map),
@@ -79,10 +80,12 @@ void Vehicle::MoveTimeAnimation()
     QList<QGraphicsItem *>::iterator it;
     for(it = colliding.begin(); it != colliding.end(); it++) {
         GameTileColision *p = reinterpret_cast<GameTileColision *>(*it);
-        if(p->code == 12345) {
-            QPair<QPointF, qreal> last = position.pop();
-            this->setPos(last.first);
-            this->setRotation(last.second);
+        if(p->code == COLLISION_CODE) {
+            QRectF r = p->Rect();
+            while(this->pos().y() <= r.bottom())
+                this->setY(this->y()+1);
+            while(this->pos().y() >= r.top())
+                this->setY(this->y()-1);    ççççççççç //AJEITAR COLISAO
         }
     }
 
@@ -125,9 +128,11 @@ void Vehicle::MoveUp()
     time_animation->stop();
     time_animation->setDuration(1000);
     time_animation->setFrameRange(0, 120);
+    animation->reset();
     animation->setTimeLine(time_animation);
-    animation->setPosAt(0, pos());
-    animation->setPosAt(1, NextPosition());
+    animation->setTranslationAt(0, 0, 0);
+    QPointF np = NextPosition();
+    animation->setTranslationAt(1, np.x(), np.y());
     time_animation->setUpdateInterval(20);
     time_animation->setEasingCurve(QEasingCurve::Linear);
     time_animation->start();
@@ -171,14 +176,13 @@ void Vehicle::RotateRight()
     panimation->start();
 }
 
-
-
 QPointF Vehicle::NextPosition()
 {
     qreal d = 100;
     QPointF pt;
     qDebug() << "Rotation: " << rotation();
-    pt.setX( pos().x() + d * qSin(qDegreesToRadians(rotation())));
-    pt.setY( pos().y() - d * qCos(qDegreesToRadians(rotation())));
+    pt.setX(d * qSin(qDegreesToRadians(rotation())));
+    pt.setY(-d * qCos(qDegreesToRadians(rotation())));
+    qDebug() << "PT:" << pt;
     return pt;
 }

@@ -4,10 +4,14 @@
 #include <QGraphicsPolygonItem>
 #include <QString>
 
+#define COLLISION_CODE      12345
+
+class GameTile;
+
 class GameTileColision : public QGraphicsPolygonItem
 {
 public:
-    explicit GameTileColision(QString list_points);
+    explicit GameTileColision(QString list_points, GameTile *tile);
     GameTileColision(const GameTileColision *c);
     virtual ~GameTileColision();
     void setDrawOrder(QString value);
@@ -17,7 +21,10 @@ public:
     int ID();
     QPointF Point();
     int code;
+    GameTile *Tile();
+    QRectF Rect();
 private:
+    GameTile *tile;
     QString draw_order;
     int id;
     QPointF point;
