@@ -3,11 +3,13 @@
 
 #include <QObject>
 #include <QGraphicsPixmapItem>
-#include <QGraphicsItemAnimation>
-#include <QPropertyAnimation>
-#include <QTimeLine>
 
-#include "game_map.h"
+#include "bomb.h"
+
+class GameMap;
+class QGraphicsItemAnimation;
+class QPropertyAnimation;
+class QTimeLine;
 
 class Vehicle : public QObject, public QGraphicsPixmapItem
 {
@@ -40,8 +42,6 @@ private:
     QGraphicsItemAnimation *animation;
     QPropertyAnimation *panimation;
     QTimeLine *time_animation;
-    QPointF last_pos;
-    qreal last_angle;
 };
 
 

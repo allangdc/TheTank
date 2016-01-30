@@ -3,7 +3,9 @@
         <file>map_tank.tmx</file>
         <file>tmw_desert_spacing.png</file>
     </qresource>
-    <qresource prefix="/tank"/>
+    <qresource prefix="/tank">
+        <file>image/ball01.png</file>
+    </qresource>
     <qresource prefix="/buttons">
         <file>image/arrow_blue.png</file>
         <file>image/arrow_silver.png</file>

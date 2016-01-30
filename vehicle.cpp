@@ -1,10 +1,13 @@
 #include "vehicle.h"
 
-#include <QTimeLine>
 #include <QDebug>
 #include <QtMath>
 #include <QGraphicsView>
+#include <QGraphicsItemAnimation>
+#include <QPropertyAnimation>
+#include <QTimeLine>
 
+#include "game_map.h"
 #include "game_tile_colision.h"
 #include "game_tile.h"
 
@@ -145,6 +148,9 @@ void Vehicle::StopMove()
 
 void Vehicle::MoveUp()
 {
+    Bomb *bomb = new Bomb(map, this);
+    bomb->Fire();
+
     if(panimation) {
         delete panimation;
         panimation = NULL;

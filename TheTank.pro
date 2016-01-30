@@ -24,7 +24,8 @@ SOURCES += main.cpp\
     game_map_layer.cpp \
     vehicle.cpp \
     game_camera.cpp \
-    game_tile_colision.cpp
+    game_tile_colision.cpp \
+    bomb.cpp
 
 HEADERS  += mainwindow.h \
     gameengine.h \
@@ -37,7 +38,8 @@ HEADERS  += mainwindow.h \
     game_map_layer.h \
     vehicle.h \
     game_camera.h \
-    game_tile_colision.h
+    game_tile_colision.h \
+    bomb.h
 
 FORMS    += mainwindow.ui
 
