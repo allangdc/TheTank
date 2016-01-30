@@ -23,6 +23,8 @@ public:
     int code;
     GameTile *Tile();
     QRectF Rect();
+protected:
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {}
 private:
     GameTile *tile;
     QString draw_order;

@@ -12,5 +12,8 @@ GameCamera::GameCamera(QWidget *parent)
 
 void GameCamera::setCentralizeObject(QGraphicsItem *object)
 {
-    center = object;
+    if(object)
+        center = object;
+    this->centerOn(center);
 }
+

@@ -3,6 +3,8 @@
 #include <QStringList>
 #include <QPolygonF>
 #include <QDebug>
+#include <QPen>
+
 
 GameTileColision::GameTileColision(QString list_points, GameTile *tile)
     : QGraphicsPolygonItem(),

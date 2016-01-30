@@ -6,7 +6,6 @@
 #include <QGraphicsItemAnimation>
 #include <QPropertyAnimation>
 #include <QTimeLine>
-#include <QStack>
 
 #include "game_map.h"
 
@@ -30,6 +29,7 @@ signals:
     //void ImMoving();
 private:
     bool ReajustCollision(QGraphicsItem *item, int step);
+    bool Reajusted();
     void StopMove();
     void MoveUp();
     void RotateLeft();
@@ -42,7 +42,6 @@ private:
     QTimeLine *time_animation;
     QPointF last_pos;
     qreal last_angle;
-    QStack< QPair<QPointF, qreal> > position;
 };
 
 

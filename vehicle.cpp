@@ -70,24 +70,10 @@ void Vehicle::FinishTimeAnimation()
 
 void Vehicle::MoveTimeAnimation()
 {
-    position.push(QPair<QPointF, qreal>(pos(), rotation()));
     QGraphicsView *view = map->views().at(0);
     view->centerOn(this);
-    //emit ImMoving();
 
-    QList<QGraphicsItem *> colliding = this->collidingItems();
-    QList<QGraphicsItem *>::iterator it;
-    for(it = colliding.begin(); it != colliding.end(); it++) {
-        GameTileColision *p = reinterpret_cast<GameTileColision *>(*it);
-        if(p->code == COLLISION_CODE) {
-            for(int i=1; i<10; i++)
-                if(ReajustCollision(p, i))
-                    break;
-        }
-    }
-
-    if(position.size() > 50)
-        position.pop();
+    Reajusted();
 }
 
 void Vehicle::MoveVehicle(int action)
@@ -122,6 +108,25 @@ bool Vehicle::ReajustCollision(QGraphicsItem *item, int step)
     }
 
     return false;
+}
+
+bool Vehicle::Reajusted()
+{
+    bool ret = false;
+    QList<QGraphicsItem *> colliding = this->collidingItems();
+    QList<QGraphicsItem *>::iterator it;
+    for(it = colliding.begin(); it != colliding.end(); it++) {
+        GameTileColision *p = reinterpret_cast<GameTileColision *>(*it);
+        if(p->code == COLLISION_CODE) {
+            for(int i=1; i<10; i++) {
+                if(ReajustCollision(p, i)) {
+                    ret = true;
+                    break;
+                }
+            }
+        }
+    }
+    return ret;
 }
 
 void Vehicle::StopMove()

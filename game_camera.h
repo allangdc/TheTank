@@ -9,7 +9,7 @@ class GameCamera : public QGraphicsView
     Q_OBJECT
 public:
     explicit GameCamera(QWidget *parent = 0);
-    void setCentralizeObject(QGraphicsItem *object);
+    void setCentralizeObject(QGraphicsItem *object = 0);
 private:
     QGraphicsItem *center;
 signals:
