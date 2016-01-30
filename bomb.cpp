@@ -8,7 +8,7 @@
 #include "game_map.h"
 
 Bomb::Bomb(GameMap *map, Vehicle *vehicle)
-    : QObject(vehicle),
+    : QObject(),
       QGraphicsPixmapItem()
 {
     this->vehicle = vehicle;
@@ -29,11 +29,6 @@ void Bomb::Fire()
     //pt.setX(this->x() + this->pixmap().width()/2 - bomb->pixmap().width()/2);
 
     this->setRotation(vehicle->rotation());
-    QPointF pt = mapFromScene(vehicle->pos());
-    QPointF me;
-    me.setX(pt.x());
-    me.setY(pt.y());
-    this->setPos(mapFromScene(me));
     map->addItem(this);
     //MoveUp();
 }

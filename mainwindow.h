@@ -21,9 +21,11 @@ public slots:
     void ReleaseLeftRight();
     void ClickRight();
     void ClickUp();
+    void ClickFire();
     void ReleaseUp();
 signals:
     void MoveTankAction(int code);
+    void TankFire();
 protected:
     void keyPressEvent(QKeyEvent *e);
     void keyReleaseEvent(QKeyEvent *e);

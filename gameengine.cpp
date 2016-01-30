@@ -57,6 +57,7 @@ void GameEngine::CreateTank()
     Vehicle *v = new Vehicle(scene);
     camera->setCentralizeObject(v);
     connect(mainwindow, SIGNAL(MoveTankAction(int)), v, SLOT(MoveVehicle(int)));
+    connect(mainwindow, SIGNAL(TankFire()), v, SLOT(Fire()));
     scene->addItem(v);
     camera->centerOn(v);
 }

@@ -25,8 +25,8 @@ public:
 public slots:
     void FinishTimeAnimation();
     void MoveTimeAnimation();
-
     void MoveVehicle(int action);
+    void Fire();
 signals:
     //void ImMoving();
 private:

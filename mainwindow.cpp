@@ -63,6 +63,11 @@ void MainWindow::ClickUp()
     emit MoveTankAction(Vehicle::MOVE_UP);
 }
 
+void MainWindow::ClickFire()
+{
+    emit TankFire();
+}
+
 void MainWindow::ReleaseUp()
 {
     emit MoveTankAction(Vehicle::STOP);
@@ -84,6 +89,8 @@ void MainWindow::keyReleaseEvent(QKeyEvent *e)
         ReleaseLeftRight();
     else if(e->key() == Qt::Key_Up)
         ReleaseUp();
+    else if(e->key() == Qt::Key_Space)
+        ClickFire();
 }
 
 void MainWindow::resizeEvent(QResizeEvent *e)

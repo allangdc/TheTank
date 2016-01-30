@@ -66,6 +66,13 @@ void Vehicle::Move(int action)
     }
 }
 
+void Vehicle::Fire()
+{
+    Bomb *bomb = new Bomb(map, this);
+    bomb->setPos(pos());
+    bomb->Fire();
+}
+
 void Vehicle::FinishTimeAnimation()
 {
     Move();
@@ -148,9 +155,6 @@ void Vehicle::StopMove()
 
 void Vehicle::MoveUp()
 {
-    Bomb *bomb = new Bomb(map, this);
-    bomb->Fire();
-
     if(panimation) {
         delete panimation;
         panimation = NULL;
