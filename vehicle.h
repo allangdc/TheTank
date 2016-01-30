@@ -29,6 +29,7 @@ public slots:
 signals:
     //void ImMoving();
 private:
+    bool ReajustCollision(QGraphicsItem *item, int step);
     void StopMove();
     void MoveUp();
     void RotateLeft();

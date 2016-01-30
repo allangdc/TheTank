@@ -76,16 +76,13 @@ void Vehicle::MoveTimeAnimation()
     //emit ImMoving();
 
     QList<QGraphicsItem *> colliding = this->collidingItems();
-    qDebug() << "Size:" << colliding.size();
     QList<QGraphicsItem *>::iterator it;
     for(it = colliding.begin(); it != colliding.end(); it++) {
         GameTileColision *p = reinterpret_cast<GameTileColision *>(*it);
         if(p->code == COLLISION_CODE) {
-            QRectF r = p->Rect();
-            while(this->pos().y() <= r.bottom())
-                this->setY(this->y()+1);
-            while(this->pos().y() >= r.top())
-                this->setY(this->y()-1);    ççççççççç //AJEITAR COLISAO
+            for(int i=1; i<10; i++)
+                if(ReajustCollision(p, i))
+                    break;
         }
     }
 
@@ -96,6 +93,35 @@ void Vehicle::MoveTimeAnimation()
 void Vehicle::MoveVehicle(int action)
 {
     Move(action);
+}
+
+bool Vehicle::ReajustCollision(QGraphicsItem *item, int step)
+{
+    setY(y()+step);
+    if(collidesWithItem(item)) {
+        setY(this->y()-step*2);
+        if(collidesWithItem(item)) {
+            setY(this->y()+step);
+        } else {
+            return true;
+        }
+    } else {
+        return true;
+    }
+
+    setX(x()+step);
+    if(collidesWithItem(item)) {
+        setX(this->x()-step*2);
+        if(collidesWithItem(item)) {
+            setX(this->x()+step);
+        } else {
+            return true;
+        }
+    } else {
+        return true;
+    }
+
+    return false;
 }
 
 void Vehicle::StopMove()
@@ -180,9 +206,7 @@ QPointF Vehicle::NextPosition()
 {
     qreal d = 100;
     QPointF pt;
-    qDebug() << "Rotation: " << rotation();
     pt.setX(d * qSin(qDegreesToRadians(rotation())));
     pt.setY(-d * qCos(qDegreesToRadians(rotation())));
-    qDebug() << "PT:" << pt;
     return pt;
 }
