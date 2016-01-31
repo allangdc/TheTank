@@ -1,28 +1,18 @@
 #ifndef BOMB_H
 #define BOMB_H
 
-#include <QObject>
-#include <QGraphicsPixmapItem>
-#include <QPointF>
+#include "vehicle.h"
 
-class Vehicle;
-class GameMap;
-class QGraphicsItemAnimation;
-class QTimeLine;
-
-class Bomb : public QObject, public QGraphicsPixmapItem
+class Bomb : public Vehicle
 {
     Q_OBJECT
 public:
-    explicit Bomb(GameMap *map, Vehicle *vehicle);
+    Bomb(GameMap *map, Vehicle *vehicle);
     void Fire();
+protected:
+    bool Reajusted();
 private:
-    void MoveUp();
-    QPointF NextPosition();
     Vehicle *vehicle;
-    GameMap *map;
-    QGraphicsItemAnimation *animation;
-    QTimeLine *time_animation;
 };
 
 #endif // BOMB_H

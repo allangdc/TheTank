@@ -2,18 +2,19 @@
 
 #include <QDebug>
 #include <QtMath>
-#include <QGraphicsView>
 #include <QGraphicsItemAnimation>
 #include <QPropertyAnimation>
 #include <QTimeLine>
 
+#include "game_camera.h"
 #include "game_map.h"
 #include "game_tile_colision.h"
 #include "game_tile.h"
 
 Vehicle::Vehicle(GameMap *map)
-    : QObject(map),
+    : QObject(),
       QGraphicsPixmapItem(),
+      code(VEHICLE_CODE),
       action(STOP),
       panimation(NULL),
       animation(NULL),
@@ -30,6 +31,8 @@ Vehicle::Vehicle(GameMap *map)
 
     this->setPos(200,200);
     this->setRotation(90+45);
+
+    setVelocity(100);
 }
 
 Vehicle::~Vehicle()
@@ -66,11 +69,19 @@ void Vehicle::Move(int action)
     }
 }
 
-void Vehicle::Fire()
+qreal Vehicle::Velocity()
 {
-    Bomb *bomb = new Bomb(map, this);
-    bomb->setPos(pos());
-    bomb->Fire();
+    return velocity;
+}
+
+void Vehicle::setVelocity(qreal velocity)
+{
+    this->velocity = velocity;
+}
+
+int Vehicle::CodeObject()
+{
+    return code;
 }
 
 void Vehicle::FinishTimeAnimation()
@@ -80,8 +91,8 @@ void Vehicle::FinishTimeAnimation()
 
 void Vehicle::MoveTimeAnimation()
 {
-    QGraphicsView *view = map->views().at(0);
-    view->centerOn(this);
+    GameCamera *view = (GameCamera *) map->views().at(0);
+    view->setCentralizeObject();
 
     Reajusted();
 }
@@ -93,11 +104,14 @@ void Vehicle::MoveVehicle(int action)
 
 bool Vehicle::ReajustCollision(QGraphicsItem *item, int step)
 {
-    setY(y()+step);
+    setPos(x(), y()+step);
+    //setY(y()+step);
     if(collidesWithItem(item)) {
-        setY(this->y()-step*2);
+        //setY(this->y()-step*2);
+        setPos(x(), y()-step*2);
         if(collidesWithItem(item)) {
-            setY(this->y()+step);
+            //setY(this->y()+step);
+            setPos(x(), y()+step);
         } else {
             return true;
         }
@@ -105,11 +119,26 @@ bool Vehicle::ReajustCollision(QGraphicsItem *item, int step)
         return true;
     }
 
-    setX(x()+step);
+    //setX(x()+step);
+    setPos(x()+step, y());
     if(collidesWithItem(item)) {
-        setX(this->x()-step*2);
+        //setX(this->x()-step*2);
+        setPos(x()-step*2, y());
         if(collidesWithItem(item)) {
-            setX(this->x()+step);
+            //setX(this->x()+step);
+            setPos(x()+step, y());
+        } else {
+            return true;
+        }
+    } else {
+        return true;
+    }
+
+    setPos(x()+step, y()+step);
+    if(collidesWithItem(item)) {
+        setPos(x()-step*2, y()-step*2);
+        if(collidesWithItem(item)) {
+            setPos(x()+step, y()+step);
         } else {
             return true;
         }
@@ -127,16 +156,27 @@ bool Vehicle::Reajusted()
     QList<QGraphicsItem *>::iterator it;
     for(it = colliding.begin(); it != colliding.end(); it++) {
         GameTileColision *p = reinterpret_cast<GameTileColision *>(*it);
-        if(p->code == COLLISION_CODE) {
+        if(p->CodeObject() == COLLISION_CODE) {
+            if(time_animation)
+                delete time_animation;
+            time_animation = NULL;
+
             for(int i=1; i<10; i++) {
                 if(ReajustCollision(p, i)) {
                     ret = true;
                     break;
                 }
             }
+
+            Move();
         }
     }
     return ret;
+}
+
+GameMap *Vehicle::Map()
+{
+    return map;
 }
 
 void Vehicle::StopMove()
@@ -171,9 +211,8 @@ void Vehicle::MoveUp()
     time_animation->setFrameRange(0, 120);
     animation->reset();
     animation->setTimeLine(time_animation);
-    animation->setTranslationAt(0, 0, 0);
-    QPointF np = NextPosition();
-    animation->setTranslationAt(1, np.x(), np.y());
+    animation->setPosAt(0, pos());
+    animation->setPosAt(1, NextPosition());
     time_animation->setUpdateInterval(20);
     time_animation->setEasingCurve(QEasingCurve::Linear);
     time_animation->start();
@@ -219,9 +258,9 @@ void Vehicle::RotateRight()
 
 QPointF Vehicle::NextPosition()
 {
-    qreal d = 100;
+    qreal d = Velocity();
     QPointF pt;
-    pt.setX(d * qSin(qDegreesToRadians(rotation())));
-    pt.setY(-d * qCos(qDegreesToRadians(rotation())));
+    pt.setX( pos().x() + d * qSin(qDegreesToRadians(rotation())));
+    pt.setY( pos().y() - d * qCos(qDegreesToRadians(rotation())));
     return pt;
 }

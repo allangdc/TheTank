@@ -15,7 +15,6 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     gameengine.cpp \
-    tank.cpp \
     tankcontrolerbutton.cpp \
     game_map.cpp \
     game_tile.cpp \
@@ -25,11 +24,11 @@ SOURCES += main.cpp\
     vehicle.cpp \
     game_camera.cpp \
     game_tile_colision.cpp \
-    bomb.cpp
+    bomb.cpp \
+    tank.cpp
 
 HEADERS  += mainwindow.h \
     gameengine.h \
-    tank.h \
     tankcontrolerbutton.h \
     game_map.h \
     game_tile.h \
@@ -39,7 +38,8 @@ HEADERS  += mainwindow.h \
     vehicle.h \
     game_camera.h \
     game_tile_colision.h \
-    bomb.h
+    bomb.h \
+    tank.h
 
 FORMS    += mainwindow.ui
 

@@ -99,3 +99,8 @@ QRectF GameTileColision::Rect()
     }
     return QRectF(min, max);
 }
+
+int GameTileColision::CodeObject()
+{
+    return code;
+}

@@ -189,11 +189,6 @@ void GameMap::LoadFullMap(int layer)
         GameTileColision *colision = tile->Colision();
         if(colision) {
             tile->UpdateTileColisionPos();
-//            QPixmap pxm = tile->pixmap();
-//            QPainter p(&pxm);
-//            p.setPen(Qt::red);
-//            p.drawPolygon(colision->polygon());
-//            tile->setPixmap(pxm);
             this->addItem(colision);
         }
     }

@@ -26,6 +26,7 @@ void TankControlerButton::RotateImage(qreal angle)
 
 bool TankControlerButton::event(QEvent *e)
 {
+#ifdef __ANDROID__
     QTouchEvent *te;
     QList<QTouchEvent::TouchPoint> tps;
     QList<QTouchEvent::TouchPoint>::iterator it;
@@ -48,6 +49,19 @@ bool TankControlerButton::event(QEvent *e)
             emit Released();
             break;
     }
+#else
+    switch (e->type()) {
+        case QEvent::MouseButtonPress:
+            SetONButton();
+            emit Pressed();
+            break;
+        case QEvent::MouseButtonRelease:
+            SetOFFButton();
+            emit Released();
+            break;
+    }
+
+#endif  // __ANDROID__
     return QLabel::event(e);
 }
 

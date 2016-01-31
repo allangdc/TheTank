@@ -20,12 +20,13 @@ public:
     QString DrawOrder();
     int ID();
     QPointF Point();
-    int code;
     GameTile *Tile();
     QRectF Rect();
+    int CodeObject();
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {}
 private:
+    int code;
     GameTile *tile;
     QString draw_order;
     int id;

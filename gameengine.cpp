@@ -4,11 +4,12 @@
 #include <QPixmap>
 #include <QDebug>
 
+#include "mainwindow.h"
 #include "game_tmx_map.h"
 #include "game_map.h"
-#include "mainwindow.h"
-#include "vehicle.h"
 #include "game_camera.h"
+#include "vehicle.h"
+#include "tank.h"
 
 GameEngine::GameEngine(QWidget *parent)
     : QObject(parent),
@@ -54,12 +55,12 @@ void GameEngine::CreateTank()
 //    tanks.push_back(tank);
 //    scene->addItem(tank);
 //    tank->setPos(100, 100);
-    Vehicle *v = new Vehicle(scene);
+    Tank *v = new Tank(scene);
     camera->setCentralizeObject(v);
     connect(mainwindow, SIGNAL(MoveTankAction(int)), v, SLOT(MoveVehicle(int)));
     connect(mainwindow, SIGNAL(TankFire()), v, SLOT(Fire()));
     scene->addItem(v);
-    camera->centerOn(v);
+    camera->setCentralizeObject(v);
 }
 
 Vehicle *GameEngine::MainTank()

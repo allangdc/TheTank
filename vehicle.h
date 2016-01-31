@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QGraphicsPixmapItem>
 
-#include "bomb.h"
+#define VEHICLE_CODE        12345
 
 class GameMap;
 class QGraphicsItemAnimation;
@@ -22,26 +22,32 @@ public:
     explicit Vehicle(GameMap *map);
     virtual ~Vehicle();
     void Move(int action = -1);
+    qreal Velocity();
+    void setVelocity(qreal velocity);
+    int CodeObject();
 public slots:
     void FinishTimeAnimation();
     void MoveTimeAnimation();
     void MoveVehicle(int action);
-    void Fire();
-signals:
-    //void ImMoving();
-private:
+protected:
     bool ReajustCollision(QGraphicsItem *item, int step);
-    bool Reajusted();
+    virtual bool Reajusted();
+    GameMap *Map();
+
+    QTimeLine *time_animation;
+private:
     void StopMove();
     void MoveUp();
     void RotateLeft();
     void RotateRight();
     QPointF NextPosition();
+
+    int code;
     int action;
     GameMap *map;
     QGraphicsItemAnimation *animation;
     QPropertyAnimation *panimation;
-    QTimeLine *time_animation;
+    qreal velocity;
 };
 
 

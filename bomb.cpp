@@ -1,66 +1,35 @@
 #include "bomb.h"
 
-#include <QGraphicsItemAnimation>
-#include <QTimeLine>
-#include <QtMath>
-
-#include "vehicle.h"
 #include "game_map.h"
+#include "game_tile_colision.h"
 
 Bomb::Bomb(GameMap *map, Vehicle *vehicle)
-    : QObject(),
-      QGraphicsPixmapItem()
+    : Vehicle(map),
+      vehicle(vehicle)
 {
-    this->vehicle = vehicle;
-    this->map = map;
-
     QPixmap pmap = QPixmap(":/tank/image/ball01.png");
     setPixmap(pmap.scaled(30, 30, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
     setTransformOriginPoint(pixmap().width()/2, pixmap().height()/2);   //define o ponto de rotação
 
-    animation = new QGraphicsItemAnimation(this);
-    animation->setItem(this);
+    setVelocity(800);
 }
 
 void Bomb::Fire()
 {
-    //QPointF pt;     //position of the bomb
-    //pt.setY(this->y() - bomb->pixmap().height()/2);
-    //pt.setX(this->x() + this->pixmap().width()/2 - bomb->pixmap().width()/2);
-
-    this->setRotation(vehicle->rotation());
-    map->addItem(this);
-    //MoveUp();
+    MoveVehicle(Vehicle::MOVE_UP);
 }
 
-void Bomb::MoveUp()
+bool Bomb::Reajusted()
 {
-    if(time_animation) {
-        delete time_animation;
-        time_animation = NULL;
+    bool ret = false;
+    QList<QGraphicsItem *> colliding = this->collidingItems();
+    QList<QGraphicsItem *>::iterator it;
+    for(it = colliding.begin(); it != colliding.end(); it++) {
+        GameTileColision *p = reinterpret_cast<GameTileColision *>(*it);
+        if(p->CodeObject() == COLLISION_CODE) {
+            deleteLater();
+            //@TODO: Implementar a colisão com um veículo
+        }
     }
-    time_animation = new QTimeLine(1000, this);
-    connect(time_animation, SIGNAL(finished()), this, SLOT(FinishTimeAnimation()));
-    connect(time_animation, SIGNAL(valueChanged(qreal)), this, SLOT(MoveTimeAnimation()));
-    time_animation->stop();
-    time_animation->setDuration(1000);
-    time_animation->setFrameRange(0, 120);
-    animation->reset();
-    animation->setTimeLine(time_animation);
-    animation->setTranslationAt(0, 0, 0);
-    QPointF np = NextPosition();
-    animation->setTranslationAt(1, np.x(), np.y());
-    time_animation->setUpdateInterval(20);
-    time_animation->setEasingCurve(QEasingCurve::Linear);
-    time_animation->start();
+    return ret;
 }
-
-QPointF Bomb::NextPosition()
-{
-    qreal d = 100;
-    QPointF pt;
-    pt.setX(d * qSin(qDegreesToRadians(rotation())));
-    pt.setY(-d * qCos(qDegreesToRadians(rotation())));
-    return pt;
-}
-

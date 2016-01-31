@@ -1,41 +1,17 @@
 #ifndef TANK_H
 #define TANK_H
 
-#include <QTimer>
-#include <QGraphicsPixmapItem>
-#include <QPointF>
-#include <QTimerEvent>
+#include "vehicle.h"
 
-#define VELOCITY_TANK       50.0f //pixel/sec
-#define FRAME_TANK          60
-#define STEP_TANK           VELOCITY_TANK/FRAME_TANK
+class GameMap;
 
-class QGraphicsScene;
-
-class Tank : public QTimer, public QGraphicsPixmapItem
+class Tank : public Vehicle
 {
     Q_OBJECT
 public:
-    enum move_direction {FORWARD, LEFT, RIGHT, STOP_ROTATION, STOP_FORWARD};
-
-    explicit Tank(QGraphicsScene *scene);
-    Tank(QGraphicsScene *scene, QPointF position, qreal angle);
-    virtual ~Tank();
-
-signals:
-
+    explicit Tank(GameMap *map);
 public slots:
-    void MoveAction(int code);
-protected:
-    QGraphicsScene *scene;
-    void timerEvent(QTimerEvent *e);
-private:
-    void PulseForward();
-    void PulseLeft();
-    void PulseRight();
-    int rotate;
-    bool forward;
-    long count_steps;
+    void Fire();
 };
 
 #endif // TANK_H
