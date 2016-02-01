@@ -42,25 +42,26 @@ void GameEngine::InitScene(QString tmxfile)
 
     camera->setScene(scene);
 
-    CreateTank();
-}
-
-void GameEngine::CreateTank()
-{
-//    Tank *tank = new Tank(scene);
-//    if(tanks.size() == 0) {
-        MainWindow *mainwindow = reinterpret_cast<MainWindow *>(parent());
-//        connect(mainwindow, SIGNAL(MoveTankAction(int)), tank, SLOT(MoveAction(int)));
-//    }
-//    tanks.push_back(tank);
-//    scene->addItem(tank);
-//    tank->setPos(100, 100);
-    Tank *v = new Tank(scene);
+    Tank *v = CreateTank();
+    MainWindow *mainwindow = reinterpret_cast<MainWindow *>(parent());
     camera->setCentralizeObject(v);
     connect(mainwindow, SIGNAL(MoveTankAction(int)), v, SLOT(MoveVehicle(int)));
     connect(mainwindow, SIGNAL(TankFire()), v, SLOT(Fire()));
-    scene->addItem(v);
+    connect(v, SIGNAL(sigFireValue(int)), mainwindow, SLOT(setFireProgress(int)));
+    connect(v, SIGNAL(sigLifeValue(int)), mainwindow, SLOT(setLifeProgress(int)));
+    connect(camera, SIGNAL(Click()), v, SLOT(Fire()));
     camera->setCentralizeObject(v);
+
+    CreateTank();
+}
+
+Tank *GameEngine::CreateTank()
+{
+    Tank *v = new Tank(scene);
+    scene->addItem(v);
+    v->setRandPos();
+    v->setRandRotation();
+    return v;
 }
 
 Vehicle *GameEngine::MainTank()

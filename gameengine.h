@@ -9,6 +9,7 @@ class QWidget;
 class GameMap;
 class GameCamera;
 class Vehicle;
+class Tank;
 
 class GameEngine: public QObject
 {
@@ -19,7 +20,7 @@ public:
     GameCamera *Camera();
     void InitScene(QString tmxfile);
 
-    void CreateTank();
+    Tank *CreateTank();
     Vehicle *MainTank();
 private:
     GameCamera *camera;

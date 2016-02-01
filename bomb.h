@@ -10,7 +10,7 @@ public:
     Bomb(GameMap *map, Vehicle *vehicle);
     void Fire();
 protected:
-    bool Reajusted();
+    virtual bool Reajusted();
 private:
     Vehicle *vehicle;
 };

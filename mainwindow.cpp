@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QApplication>
 #include <QPropertyAnimation>
+#include <QProgressBar>
 
 #include "gameengine.h"
 #include "game_map.h"
@@ -36,11 +37,22 @@ MainWindow::MainWindow(QWidget *parent) :
     engine = new GameEngine(this);
     engine->setCamera(ui->graphicsView);
     engine->InitScene(":/map/map_tank.tmx");
+
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::setFireProgress(int value)
+{
+    ui->fire_bar->setValue(value);
+}
+
+void MainWindow::setLifeProgress(int value)
+{
+    ui->life_bar->setValue(value);
 }
 
 void MainWindow::ClickLeft()
@@ -75,22 +87,26 @@ void MainWindow::ReleaseUp()
 
 void MainWindow::keyPressEvent(QKeyEvent *e)
 {
-    if(e->key() == Qt::Key_Left)
-        ClickLeft();
-    else if(e->key() == Qt::Key_Right)
-        ClickRight();
-    else if(e->key() == Qt::Key_Up)
-        ClickUp();
+    if(!e->isAutoRepeat()) {
+        if(e->key() == Qt::Key_Left)
+            ClickLeft();
+        else if(e->key() == Qt::Key_Right)
+            ClickRight();
+        else if(e->key() == Qt::Key_Up)
+            ClickUp();
+    }
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent *e)
 {
-    if(e->key() == Qt::Key_Left || e->key() == Qt::Key_Right)
-        ReleaseLeftRight();
-    else if(e->key() == Qt::Key_Up)
-        ReleaseUp();
-    else if(e->key() == Qt::Key_Space)
-        ClickFire();
+    if(!e->isAutoRepeat()) {
+        if(e->key() == Qt::Key_Left || e->key() == Qt::Key_Right)
+            ReleaseLeftRight();
+        else if(e->key() == Qt::Key_Up)
+            ReleaseUp();
+        else if(e->key() == Qt::Key_Space)
+            ClickFire();
+    }
 }
 
 void MainWindow::resizeEvent(QResizeEvent *e)

@@ -23,6 +23,8 @@ public slots:
     void ClickUp();
     void ClickFire();
     void ReleaseUp();
+    void setFireProgress(int value);
+    void setLifeProgress(int value);
 signals:
     void MoveTankAction(int code);
     void TankFire();
