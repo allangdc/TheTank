@@ -9,8 +9,8 @@
 #include <QProgressBar>
 
 #include "gameengine.h"
-#include "game_map.h"
-#include "vehicle.h"
+#include "map/game_map.h"
+#include "vehicle/vehicle.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),

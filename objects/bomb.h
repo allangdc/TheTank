@@ -1,7 +1,7 @@
 #ifndef BOMB_H
 #define BOMB_H
 
-#include "vehicle.h"
+#include "vehicle/vehicle.h"
 
 class Bomb : public Vehicle
 {

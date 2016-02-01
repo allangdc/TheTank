@@ -15,31 +15,31 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     gameengine.cpp \
-    tankcontrolerbutton.cpp \
-    game_map.cpp \
-    game_tile.cpp \
-    game_tiled_set.cpp \
-    game_tmx_map.cpp \
-    game_map_layer.cpp \
-    vehicle.cpp \
-    game_camera.cpp \
-    game_tile_colision.cpp \
-    bomb.cpp \
-    tank.cpp
+    controller/tankcontrolerbutton.cpp \
+    map/game_map.cpp \
+    map/game_tile.cpp \
+    map/game_tiled_set.cpp \
+    map/game_tmx_map.cpp \
+    map/game_map_layer.cpp \
+    vehicle/vehicle.cpp \
+    map/game_camera.cpp \
+    map/game_tile_colision.cpp \
+    objects/bomb.cpp \
+    objects/tank.cpp
 
 HEADERS  += mainwindow.h \
     gameengine.h \
-    tankcontrolerbutton.h \
-    game_map.h \
-    game_tile.h \
-    game_tiled_set.h \
-    game_tmx_map.h \
-    game_map_layer.h \
-    vehicle.h \
-    game_camera.h \
-    game_tile_colision.h \
-    bomb.h \
-    tank.h
+    controller/tankcontrolerbutton.h \
+    map/game_map.h \
+    map/game_tile.h \
+    map/game_tiled_set.h \
+    map/game_tmx_map.h \
+    map/game_map_layer.h \
+    vehicle/vehicle.h \
+    map/game_camera.h \
+    map/game_tile_colision.h \
+    objects/bomb.h \
+    objects/tank.h
 
 FORMS    += mainwindow.ui
 

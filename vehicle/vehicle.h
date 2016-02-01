@@ -17,7 +17,12 @@ class Vehicle : public QObject, public QGraphicsPixmapItem
     Q_PROPERTY(qreal rotation READ rotation WRITE setRotation)
 public:
     enum EAction {
-        STOP = 0, MOVE_UP, ROTATE_LEFT, ROTATE_RIGHT, MOVE_LEFT, MOVE_RIGHT
+        STOP            = 0b0000,
+        MOVE_UP         = 0b0001,
+        ROTATE_LEFT     = 0b0110,
+        ROTATE_RIGHT    = 0b0100,
+        MOVE_LEFT       = 0b0111,
+        MOVE_RIGHT      = 0b0101
     };
     explicit Vehicle(GameMap *map);
     virtual ~Vehicle();

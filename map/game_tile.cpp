@@ -1,8 +1,8 @@
-#include "game_tile.h"
+#include "map/game_tile.h"
 
 #include <QPropertyAnimation>
 
-#include "game_tile_colision.h"
+#include "map/game_tile_colision.h"
 
 GameTile::GameTile(int id)
     : QObject(),

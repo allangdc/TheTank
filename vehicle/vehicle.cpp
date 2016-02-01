@@ -1,4 +1,4 @@
-#include "vehicle.h"
+#include "vehicle/vehicle.h"
 
 #include <QDebug>
 #include <QtMath>
@@ -7,10 +7,10 @@
 #include <QTimeLine>
 #include <QTime>
 
-#include "game_camera.h"
-#include "game_map.h"
-#include "game_tile_colision.h"
-#include "game_tile.h"
+#include "map/game_camera.h"
+#include "map/game_map.h"
+#include "map/game_tile_colision.h"
+#include "map/game_tile.h"
 
 Vehicle::Vehicle(GameMap *map)
     : QObject(),
@@ -215,7 +215,7 @@ bool Vehicle::Reajusted()
             GameTileColision *p = (GameTileColision *) (*it);
             if(p != NULL && p->CodeObject() == COLLISION_CODE) {
                 UnloadConnections();
-                time_animation->stop();
+                //time_animation->stop();
                 for(int i=1; i<20; i++) {
                     if(ReajustCollision(p, i)) {
                         ret = true;

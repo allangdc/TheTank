@@ -5,11 +5,11 @@
 #include <QDebug>
 
 #include "mainwindow.h"
-#include "game_tmx_map.h"
-#include "game_map.h"
-#include "game_camera.h"
-#include "vehicle.h"
-#include "tank.h"
+#include "map/game_tmx_map.h"
+#include "map/game_map.h"
+#include "map/game_camera.h"
+#include "vehicle/vehicle.h"
+#include "objects/tank.h"
 
 GameEngine::GameEngine(QWidget *parent)
     : QObject(parent),

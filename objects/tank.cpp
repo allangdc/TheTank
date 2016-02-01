@@ -1,10 +1,10 @@
-#include "tank.h"
+#include "objects/tank.h"
 
 #include <QPropertyAnimation>
 #include <QPixmap>
 #include <QtMath>
 
-#include "game_map.h"
+#include "map/game_map.h"
 #include "bomb.h"
 
 Tank::Tank(GameMap *map, int ColorID)

@@ -1,8 +1,8 @@
-#include "game_tiled_set.h"
+#include "map/game_tiled_set.h"
 
 #include <QtMath>
 
-#include "game_tile.h"
+#include "map/game_tile.h"
 
 GameTiledSet::GameTiledSet()
 {

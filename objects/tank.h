@@ -1,7 +1,7 @@
 #ifndef TANK_H
 #define TANK_H
 
-#include "vehicle.h"
+#include "vehicle/vehicle.h"
 #include <QPropertyAnimation>
 
 #define YELLOW_TANK          ":/tank/image/yellow_tank.png"

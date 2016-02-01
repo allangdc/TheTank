@@ -1,7 +1,7 @@
-#include "game_map_layer.h"
+#include "map/game_map_layer.h"
 
-#include "game_map.h"
-#include "game_tile.h"
+#include "map/game_map.h"
+#include "map/game_tile.h"
 
 GameMapLayer::GameMapLayer(GameMap *map)
     : QObject()

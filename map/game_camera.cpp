@@ -1,4 +1,4 @@
-#include "game_camera.h"
+#include "map/game_camera.h"
 
 #include <QDebug>
 #include <QtMath>

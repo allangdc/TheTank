@@ -1,8 +1,8 @@
 #include "bomb.h"
 
-#include "game_map.h"
-#include "game_tile_colision.h"
-#include "tank.h"
+#include "map/game_map.h"
+#include "map/game_tile_colision.h"
+#include "objects/tank.h"
 
 Bomb::Bomb(GameMap *map, Vehicle *vehicle)
     : Vehicle(map),
