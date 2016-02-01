@@ -1,15 +1,44 @@
 #include "tank.h"
 
 #include <QPropertyAnimation>
+#include <QPixmap>
+#include <QtMath>
 
 #include "game_map.h"
 #include "bomb.h"
 
-Tank::Tank(GameMap *map)
+Tank::Tank(GameMap *map, int ColorID)
     : Vehicle(map),
+      is_server(true),
       fire_value(100),
       life_value(100)
 {
+    QPixmap pmap;
+    switch (ColorID) {
+    case YELLOW:
+        pmap = QPixmap(YELLOW_TANK);
+        break;
+    case RED:
+        pmap = QPixmap(RED_TANK);
+        break;
+    case BLUE:
+        pmap = QPixmap(BLUE_TANK);
+        break;
+    case GREEN:
+        pmap = QPixmap(GREEN_TANK);
+        break;
+    case GREY:
+    default:
+        pmap = QPixmap(GREY_TANK);
+        break;
+    }
+    //QPixmap pmap = QPixmap(YELLOW_TANK);
+    QTransform transform;
+    QTransform trans = transform.rotate(90);
+    pmap = pmap.transformed(trans);
+    setPixmap(pmap.scaled(30, 50, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+    setTransformOriginPoint(pixmap().width()/2, pixmap().height()/2);   //define o ponto de rotação
+
     setVelocity(100);
     animation_firebar = new QPropertyAnimation(this, "firevalue");
     animation_firebar->setDuration(5000);
@@ -55,4 +84,31 @@ void Tank::setFireValue(int value)
 void Tank::setLifeValue(int value)
 {
     life_value = value;
+    emit sigLifeValue(value);
+}
+
+int Tank::FireValue()
+{
+    return fire_value;
+}
+
+int Tank::LifeValue()
+{
+    return life_value;
+}
+
+void Tank::DecLife()
+{
+    if(IsServer()) {
+        if(LifeValue()>=10) {
+            setLifeValue(LifeValue()-50);
+            if(LifeValue() <= 0)
+                deleteLater();
+        }
+    }
+}
+
+bool Tank::IsServer()
+{
+    return is_server;
 }

@@ -3,9 +3,8 @@
 
 #include <QObject>
 #include <QGraphicsPixmapItem>
-#include <QMutex>
 
-#define VEHICLE_CODE        54321
+#define VEHICLE_CODE        0xC0DE
 
 class GameMap;
 class QGraphicsItemAnimation;
@@ -28,6 +27,7 @@ public:
     int CodeObject();
     void setRandPos();
     void setRandRotation();
+    int ID();
 public slots:
     void FinishTimeAnimation();
     void MoveTimeAnimation();
@@ -38,7 +38,6 @@ protected:
     virtual bool Reajusted();
     GameMap *Map();
 
-    QTimeLine *time_animation;
 private:
     void LoadConnections();
     void UnloadConnections();
@@ -49,12 +48,13 @@ private:
     QPointF NextPosition();
 
     int code;
+    int id;
     int action;
     GameMap *map;
     QGraphicsItemAnimation *animation;
     QPropertyAnimation *panimation;
     qreal velocity;
-    QMutex mutex;
+    QTimeLine *time_animation;
 };
 
 

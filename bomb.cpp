@@ -27,13 +27,15 @@ bool Bomb::Reajusted()
     QList<QGraphicsItem *> colliding = this->collidingItems();
     QList<QGraphicsItem *>::const_iterator it;
     for(it = colliding.begin(); it != colliding.end(); it++) {
-        Tank *v = reinterpret_cast<Tank *>(*it);
-        GameTileColision *p = reinterpret_cast<GameTileColision *>(*it);
+        Tank *v = (Tank *) (*it);
+        GameTileColision *p = (GameTileColision *) (*it);
         if(v != NULL && v->CodeObject() == VEHICLE_CODE) {
-            deleteLater();
+            if(v->ID() != vehicle->ID()) {
+                v->DecLife();
+                deleteLater();
+            }
         } else if(p != NULL && p->CodeObject() == COLLISION_CODE) {
             deleteLater();
-            //@TODO: Implementar a colisão com um veículo
         }
     }
     return ret;

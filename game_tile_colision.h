@@ -4,7 +4,7 @@
 #include <QGraphicsPolygonItem>
 #include <QString>
 
-#define COLLISION_CODE      12345
+#define COLLISION_CODE      0xB0CA
 
 class GameTile;
 

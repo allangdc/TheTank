@@ -6,7 +6,6 @@
 #include <QPropertyAnimation>
 #include <QTimeLine>
 #include <QTime>
-#include <QMutexLocker>
 
 #include "game_camera.h"
 #include "game_map.h"
@@ -27,6 +26,8 @@ Vehicle::Vehicle(GameMap *map)
     QTime now = QTime::currentTime();
     while(now == QTime::currentTime());
     qsrand(now.msec());
+
+    id = qrand();
 
     QPixmap pmap = QPixmap(":/buttons/image/tank_yellow.png");
     setPixmap(pmap.scaled(30, 30, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
@@ -111,6 +112,11 @@ void Vehicle::setRandRotation()
         angle = (double) qrand()/(double) RAND_MAX * 360;
         setRotation(angle);
     } while(HasCollision());
+}
+
+int Vehicle::ID()
+{
+    return id;
 }
 
 void Vehicle::FinishTimeAnimation()
@@ -206,11 +212,10 @@ bool Vehicle::Reajusted()
     if(colliding.size()>0) {
         QList<QGraphicsItem *>::iterator it;
         for(it = colliding.begin(); it != colliding.end(); it++) {
-            GameTileColision *p = reinterpret_cast<GameTileColision *>(*it);
-            if(p->CodeObject() == COLLISION_CODE) {
-                time_animation->stop();
+            GameTileColision *p = (GameTileColision *) (*it);
+            if(p != NULL && p->CodeObject() == COLLISION_CODE) {
                 UnloadConnections();
-                //animation->reset();
+                time_animation->stop();
                 for(int i=1; i<20; i++) {
                     if(ReajustCollision(p, i)) {
                         ret = true;

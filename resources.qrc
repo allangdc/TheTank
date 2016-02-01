@@ -5,6 +5,11 @@
     </qresource>
     <qresource prefix="/tank">
         <file>image/ball01.png</file>
+        <file>image/blue_tank.png</file>
+        <file>image/green_tank.png</file>
+        <file>image/grey_tank.png</file>
+        <file>image/red_tank.png</file>
+        <file>image/yellow_tank.png</file>
     </qresource>
     <qresource prefix="/buttons">
         <file>image/arrow_blue.png</file>

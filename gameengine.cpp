@@ -51,13 +51,16 @@ void GameEngine::InitScene(QString tmxfile)
     connect(v, SIGNAL(sigLifeValue(int)), mainwindow, SLOT(setLifeProgress(int)));
     connect(camera, SIGNAL(Click()), v, SLOT(Fire()));
     camera->setCentralizeObject(v);
+    v->setFireValue(100);
+    v->setLifeValue(100);
 
     CreateTank();
 }
 
 Tank *GameEngine::CreateTank()
 {
-    Tank *v = new Tank(scene);
+    static int i=0;
+    Tank *v = new Tank(scene, i++);
     scene->addItem(v);
     v->setRandPos();
     v->setRandRotation();

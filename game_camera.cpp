@@ -10,7 +10,7 @@ GameCamera::GameCamera(QWidget *parent)
       center(NULL)
 {
     setAttribute(Qt::WA_AcceptTouchEvents);
-    scale(2,2);
+    scale(1,1);
 //    animation = new QPropertyAnimation(this, "centercamera");
 //    animation->setDuration(1000);
     //animation->setEasingCurve(QEasingCurve::Linear);
