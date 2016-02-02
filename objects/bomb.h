@@ -3,16 +3,18 @@
 
 #include "vehicle/vehicle.h"
 
+class Tank;
+
 class Bomb : public Vehicle
 {
     Q_OBJECT
 public:
-    Bomb(GameMap *map, Vehicle *vehicle);
+    Bomb(GameMap *map, Tank *vehicle);
     void Fire();
 protected:
     virtual bool Reajusted();
 private:
-    Vehicle *vehicle;
+    Tank *vehicle;
 };
 
 #endif // BOMB_H

@@ -4,7 +4,7 @@
 #include "map/game_tile_colision.h"
 #include "objects/tank.h"
 
-Bomb::Bomb(GameMap *map, Vehicle *vehicle)
+Bomb::Bomb(GameMap *map, Tank *vehicle)
     : Vehicle(map),
       vehicle(vehicle)
 {
@@ -30,7 +30,7 @@ bool Bomb::Reajusted()
         GameTileColision *p = (GameTileColision *) (*it);
         if(v != NULL && v->CodeObject() == VEHICLE_CODE) {
             if(v->ID() != vehicle->ID()) {
-                v->DecLife();
+                v->DecLife(vehicle);
                 deleteLater();
             }
         } else if(p != NULL && p->CodeObject() == COLLISION_CODE) {

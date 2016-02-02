@@ -80,6 +80,8 @@ void GameEngine::setMainTank(Tank *tank)
     connect(tank, SIGNAL(ChangeStatus()), protocol, SLOT(SendMovement()));
     connect(tank, SIGNAL(ChangeStatus(bool)), protocol, SLOT(SendMovement(bool)));
     my_tank = tank;
+
+    tank->setLifeValue(100);
 }
 
 Tank *GameEngine::MainTank()
@@ -114,6 +116,16 @@ void GameEngine::setConnection(bool is_server, QString ip, int port)
         conn_client->connectToHost(ip, port);
         conn_client->waitForConnected();
     }
+}
+
+bool GameEngine::IsServer()
+{
+    return conn_server==NULL?false:true;
+}
+
+QString GameEngine::IpPort()
+{
+    return QString("%1:%2").arg(ip).arg(port);
 }
 
 void GameEngine::ServerInitConnection(int id)

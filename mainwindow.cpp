@@ -38,7 +38,6 @@ MainWindow::MainWindow(QWidget *parent) :
     engine = new GameEngine(this);
     engine->setCamera(ui->graphicsView);
     engine->InitScene(":/map/map_tank.tmx");
-
 }
 
 MainWindow::~MainWindow()
@@ -118,6 +117,12 @@ void MainWindow::keyReleaseEvent(QKeyEvent *e)
 void MainWindow::resizeEvent(QResizeEvent *e)
 {
     ui->graphicsView->setCentralizeObject();
+}
+
+void MainWindow::showEvent(QShowEvent *e)
+{
+    ui->lb_status_conection->setText(engine->IsServer()?"Servidor":"Cliente");
+    ui->lb_ip_port->setText(engine->IpPort());
 }
 
 

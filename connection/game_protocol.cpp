@@ -32,13 +32,14 @@ void GameProtocol::GenerateMap()
     for(int i=0; i<map.total; i++) {
         struct VehicleStatus *vehicle_status = &(map.status[i]);
         Tank *v = vehicles->at(i);
-        vehicle_status->code = CODE_VEHICLE;
-        vehicle_status->pos = v->pos();
-        vehicle_status->angle = v->rotation();
-        vehicle_status->id = v->ID();
-        vehicle_status->fire = 0;
-        vehicle_status->action = v->Action();
-        vehicle_status->life = v->LifeValue();
+//        vehicle_status->code = CODE_VEHICLE;
+//        vehicle_status->pos = v->pos();
+//        vehicle_status->angle = v->rotation();
+//        vehicle_status->id = v->ID();
+//        vehicle_status->fire = 0;
+//        vehicle_status->action = v->Action();
+//        vehicle_status->life = (unsigned char) (v->LifeValue()/10);
+        *vehicle_status = Status(v);
     }
     QByteArray array((char *) &map, sizeof(struct MapStatus));
     conn_server->BroadcastMessage(array);
@@ -53,15 +54,17 @@ void GameProtocol::ReceiverMap(QByteArray array)
         for(int i=0; i<map->total; i++) {
             struct VehicleStatus *vstatus = &(map->status[i]);
             Tank *v;
-            if(i != map->total-1)
+            if(i != map->total-1) {
                 v = engine->CreateTank();
-            else
+                v->setLifeValue(vstatus->life * 10);
+            } else {
                 v = engine->CreateTank(true);
+                v->setLifeValue(100);
+            }
             v->setPos(vstatus->pos);
             v->setRotation(vstatus->angle);
             v->setID(vstatus->id);
             v->MoveVehicle(vstatus->action);
-            v->setLifeValue(vstatus->life);
         }
     } else if(map->total == vehicles->size()) {
         for(int i=0; i<map->total; i++) {
@@ -71,7 +74,7 @@ void GameProtocol::ReceiverMap(QByteArray array)
             v->setRotation(vstatus->angle);
             v->setID(vstatus->id);
             v->MoveVehicle(vstatus->action);
-            v->setLifeValue(vstatus->life);
+            v->setLifeValue(vstatus->life * 10);
         }
     } else {
         for(int i=0; i<map->total; i++) {
@@ -85,7 +88,7 @@ void GameProtocol::ReceiverMap(QByteArray array)
             v->setRotation(vstatus->angle);
             v->setID(vstatus->id);
             v->MoveVehicle(vstatus->action);
-            v->setLifeValue(vstatus->life);
+            v->setLifeValue(vstatus->life * 10);
         }
     }
 }
@@ -100,7 +103,7 @@ void GameProtocol::SendTankStatus(bool fire)
     v.id = t->ID();
     v.fire = fire?1:0;
     v.action = t->Action();
-    v.life = t->LifeValue();
+    v.life = (unsigned char) (t->LifeValue() / 10);
     QByteArray array((char *) &v, sizeof(struct Vehicle));
     if(conn_client)
         conn_client->SendMessage(array);
@@ -127,12 +130,12 @@ void GameProtocol::ReceiverTankStatus(QByteArray array)
                 t->setRotation(v->angle);
                 t->setID(v->id);
                 t->MoveVehicle(v->action);
-                t->setLifeValue(v->life);
+                t->setLifeValue(v->life * 10);
                 if(v->fire == 1) {
                     t->Fire();
                 }
             } else {
-                t->setLifeValue(v->life);
+                t->setLifeValue(v->life * 10);
             }
         }
     }
@@ -146,6 +149,22 @@ void GameProtocol::SendMovement()
 void GameProtocol::SendMovement(bool fire)
 {
     SendTankStatus(fire);
+}
+
+VehicleStatus GameProtocol::Status(Tank *tank)
+{
+    VehicleStatus v;
+    v.code = CODE_VEHICLE;
+    v.pos = tank->pos();
+    v.angle = tank->rotation();
+    v.id = tank->ID();
+    v.fire = 0;
+    v.action = tank->Action();
+    v.life = (unsigned char) (tank->LifeValue()/10);
+    v.total_shots = tank->getShot();
+    v.total_hits = tank->getHit();
+    v.total_deaths = tank->getDeath();
+    return v;
 }
 
 unsigned char GameProtocol::GetCode(QByteArray array)

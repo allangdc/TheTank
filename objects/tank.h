@@ -9,6 +9,7 @@
 #define GREEN_TANK           ":/tank/image/green_tank.png"
 #define BLUE_TANK            ":/tank/image/blue_tank.png"
 #define GREY_TANK            ":/tank/image/grey_tank.png"
+#define EXPLOSION            ":/tank/image/explosion.png"
 
 class GameMap;
 
@@ -28,8 +29,16 @@ public:
     void setLifeValue(int value);
     int FireValue();
     int LifeValue();
-    void DecLife();
+    void DecLife(Tank *who_fire);
     bool IsServer();
+    void Died();
+
+    void IncShot();
+    void IncHit();
+    void IncDeath();
+    int getShot();
+    int getHit();
+    int getDeath();
 signals:
     void sigFireValue(int value);
     void sigLifeValue(int value);
@@ -41,6 +50,9 @@ private:
     int fire_value;
     int life_value;
     QPropertyAnimation *animation_firebar;
+    qint16 total_shots;
+    qint16 total_hits;
+    qint8 total_deaths;
 };
 
 #endif // TANK_H

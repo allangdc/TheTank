@@ -26,6 +26,8 @@ public:
     void setMainTank(Tank *tank);
     Tank *MainTank();
     void setConnection(bool is_server, QString ip, int port);
+    bool IsServer();
+    QString IpPort();
 private:
     Tank *my_tank;
     GameProtocol *protocol;

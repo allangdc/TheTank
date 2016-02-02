@@ -10,6 +10,7 @@
         <file>image/grey_tank.png</file>
         <file>image/red_tank.png</file>
         <file>image/yellow_tank.png</file>
+        <file>image/explosion.png</file>
     </qresource>
     <qresource prefix="/buttons">
         <file>image/arrow_blue.png</file>

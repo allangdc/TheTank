@@ -11,9 +11,12 @@ struct VehicleStatus {
     QPointF pos;
     qreal angle;
     int id;
+    unsigned char life;
+    qint16 total_shots;
+    qint16 total_hits;
+    qint8 total_deaths;
     unsigned char fire      : 1;
     unsigned char action    : 3;
-    unsigned char life      : 4;
 };
 
 struct MapStatus {
@@ -52,6 +55,7 @@ public slots:
     void SendMovement();
     void SendMovement(bool fire);
 private:
+    VehicleStatus Status(Tank *tank);
     QVector<Tank *> *vehicles;
     GameMap *game_map;
     GameEngine *engine;

@@ -19,7 +19,8 @@ Vehicle::Vehicle(GameMap *map)
       action(STOP),
       panimation(NULL),
       animation(NULL),
-      time_animation(NULL)
+      time_animation(NULL),
+      is_alive(true)
 {
     this->map = map;
 
@@ -42,10 +43,10 @@ Vehicle::Vehicle(GameMap *map)
 
     setVelocity(100);
 
-    //Envia a cada três segundos para resolver o problema de sincronização.
+    //Envia a cada 1 segundo para resolver o problema de sincronização.
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(TimeOut()));
-    timer->setInterval(3000);
+    timer->setInterval(1000);
     timer->start();
 }
 
@@ -65,6 +66,10 @@ Vehicle::~Vehicle()
 
 void Vehicle::Move(int action)
 {
+    if(!IsAlive()) {
+        return;
+    }
+
     if(action >= 0)
         this->action = action;
     switch (this->action) {
@@ -257,6 +262,23 @@ bool Vehicle::Reajusted()
 GameMap *Vehicle::Map()
 {
     return map;
+}
+
+void Vehicle::setAlive(bool value)
+{
+    is_alive = value;
+    if(!is_alive) {
+        code = EXPLOSION_CODE;
+        timer->stop();
+    } else {
+        code = VEHICLE_CODE;
+        timer->start();
+    }
+}
+
+bool Vehicle::IsAlive()
+{
+    return is_alive;
 }
 
 void Vehicle::LoadConnections()

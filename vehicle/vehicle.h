@@ -6,6 +6,7 @@
 #include <QTimer>
 
 #define VEHICLE_CODE        0xC0DE
+#define EXPLOSION_CODE      0xA1A1
 
 class GameMap;
 class QGraphicsItemAnimation;
@@ -48,6 +49,8 @@ protected:
     bool ReajustCollision(QGraphicsItem *item, int step);
     virtual bool Reajusted();
     GameMap *Map();
+    void setAlive(bool value);
+    bool IsAlive();
 private:
     void LoadConnections();
     void UnloadConnections();
@@ -65,6 +68,7 @@ private:
     qreal velocity;
     QTimeLine *time_animation;
     QTimer *timer;
+    bool is_alive;
 };
 
 

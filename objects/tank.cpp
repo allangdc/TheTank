@@ -11,7 +11,10 @@ Tank::Tank(GameMap *map, int ColorID)
     : Vehicle(map),
       is_server(true),
       fire_value(100),
-      life_value(100)
+      life_value(100),
+      total_deaths(0),
+      total_shots(0),
+      total_hits(0)
 {
     QPixmap pmap;
     switch (ColorID) {
@@ -32,7 +35,7 @@ Tank::Tank(GameMap *map, int ColorID)
         pmap = QPixmap(GREY_TANK);
         break;
     }
-    //QPixmap pmap = QPixmap(YELLOW_TANK);
+
     QTransform transform;
     QTransform trans = transform.rotate(90);
     pmap = pmap.transformed(trans);
@@ -54,8 +57,12 @@ Tank::~Tank()
 
 void Tank::Fire()
 {
+    if(!IsAlive())
+        return;
+
     emit ChangeStatus(true);
     if(fire_value == 100) {
+        IncShot();
         Bomb *bomb = new Bomb(Map(), this);
 
         QPointF pt;     //position of the bomb
@@ -99,14 +106,17 @@ int Tank::LifeValue()
     return life_value;
 }
 
-void Tank::DecLife()
+void Tank::DecLife(Tank *who_fire)
 {
+    who_fire->IncHit();
     if(IsServer()) {
         if(LifeValue()>=10) {
             setLifeValue(LifeValue()-50);
             emit ChangeStatus(false);
-            if(LifeValue() <= 0)
-                deleteLater();
+            if(LifeValue() <= 0) {
+                who_fire->IncDeath();
+                Died();
+            }
         }
     }
 }
@@ -115,3 +125,46 @@ bool Tank::IsServer()
 {
     return is_server;
 }
+
+void Tank::Died()
+{
+    setAlive(false);
+    MoveVehicle(Vehicle::STOP);
+
+    QPixmap pmap = QPixmap(EXPLOSION);
+    setPixmap(pmap.scaled(50, 50, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+    setTransformOriginPoint(pixmap().width()/2, pixmap().height()/2);   //define o ponto de rotação
+}
+
+void Tank::IncShot()
+{
+    total_shots++;
+}
+
+void Tank::IncHit()
+{
+    total_hits++;
+}
+
+void Tank::IncDeath()
+{
+    total_deaths++;
+}
+
+int Tank::getShot()
+{
+    return total_shots;
+}
+
+int Tank::getHit()
+{
+    return total_hits;
+}
+
+int Tank::getDeath()
+{
+    return total_deaths;
+}
+
+
+
