@@ -36,9 +36,12 @@ public:
     void IncShot();
     void IncHit();
     void IncDeath();
-    int getShot();
-    int getHit();
-    int getDeath();
+    qint16 getShot();
+    qint16 getHit();
+    qint8 getDeath();
+    void setShot(qint16 value);
+    void setHit(qint16 value);
+    void setDeath(qint8 value);
 signals:
     void sigFireValue(int value);
     void sigLifeValue(int value);
@@ -48,7 +51,7 @@ public slots:
 private:
     bool is_server;
     int fire_value;
-    int life_value;
+    qint8 life_value;
     QPropertyAnimation *animation_firebar;
     qint16 total_shots;
     qint16 total_hits;

@@ -52,6 +52,8 @@ void GameEngine::InitScene(QString tmxfile)
 Tank *GameEngine::CreateTank(bool main_tank)
 {
     static int i=0;
+    if(i>=5)
+        i=0;
     Tank *v = new Tank(scene, i++);
     scene->addItem(v);
     v->setRandPos();

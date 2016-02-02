@@ -111,7 +111,7 @@ void Tank::DecLife(Tank *who_fire)
     who_fire->IncHit();
     if(IsServer()) {
         if(LifeValue()>=10) {
-            setLifeValue(LifeValue()-50);
+            setLifeValue(LifeValue()-10);
             emit ChangeStatus(false);
             if(LifeValue() <= 0) {
                 who_fire->IncDeath();
@@ -151,19 +151,34 @@ void Tank::IncDeath()
     total_deaths++;
 }
 
-int Tank::getShot()
+qint16 Tank::getShot()
 {
     return total_shots;
 }
 
-int Tank::getHit()
+qint16 Tank::getHit()
 {
     return total_hits;
 }
 
-int Tank::getDeath()
+qint8 Tank::getDeath()
 {
     return total_deaths;
+}
+
+void Tank::setShot(qint16 value)
+{
+    total_shots = value;
+}
+
+void Tank::setHit(qint16 value)
+{
+    total_hits = value;
+}
+
+void Tank::setDeath(qint8 value)
+{
+    total_deaths = value;
 }
 
 
