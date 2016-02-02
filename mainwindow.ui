@@ -116,14 +116,14 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>TankControlerButton</class>
-   <extends>QLabel</extends>
-   <header>tankcontrolerbutton.h</header>
-  </customwidget>
-  <customwidget>
    <class>GameCamera</class>
    <extends>QGraphicsView</extends>
-   <header>game_camera.h</header>
+   <header>map/game_camera.h</header>
+  </customwidget>
+  <customwidget>
+   <class>TankControlerButton</class>
+   <extends>QLabel</extends>
+   <header>controller/tank_controler_button.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

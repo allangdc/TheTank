@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QGraphicsPixmapItem>
+#include <QTimer>
 
 #define VEHICLE_CODE        0xC0DE
 
@@ -17,12 +18,12 @@ class Vehicle : public QObject, public QGraphicsPixmapItem
     Q_PROPERTY(qreal rotation READ rotation WRITE setRotation)
 public:
     enum EAction {
-        STOP            = 0b0000,
-        MOVE_UP         = 0b0001,
-        ROTATE_LEFT     = 0b0110,
-        ROTATE_RIGHT    = 0b0100,
-        MOVE_LEFT       = 0b0111,
-        MOVE_RIGHT      = 0b0101
+        STOP            = 0b000,
+        MOVE_UP         = 0b001,
+        ROTATE_LEFT     = 0b110,
+        ROTATE_RIGHT    = 0b100,
+        MOVE_LEFT       = 0b111,
+        MOVE_RIGHT      = 0b101
     };
     explicit Vehicle(GameMap *map);
     virtual ~Vehicle();
@@ -33,16 +34,20 @@ public:
     void setRandPos();
     void setRandRotation();
     int ID();
+    void setID(int id);
+    int Action();
+signals:
+    void ChangeStatus();
 public slots:
     void FinishTimeAnimation();
     void MoveTimeAnimation();
     void MoveVehicle(int action);
+    void TimeOut();
 protected:
     bool HasCollision();
     bool ReajustCollision(QGraphicsItem *item, int step);
     virtual bool Reajusted();
     GameMap *Map();
-
 private:
     void LoadConnections();
     void UnloadConnections();
@@ -51,15 +56,15 @@ private:
     void RotateLeft();
     void RotateRight();
     QPointF NextPosition();
-
-    int code;
     int id;
+    int code;
     int action;
     GameMap *map;
     QGraphicsItemAnimation *animation;
     QPropertyAnimation *panimation;
     qreal velocity;
     QTimeLine *time_animation;
+    QTimer *timer;
 };
 
 

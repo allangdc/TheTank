@@ -41,6 +41,12 @@ Vehicle::Vehicle(GameMap *map)
     LoadConnections();
 
     setVelocity(100);
+
+    //Envia a cada três segundos para resolver o problema de sincronização.
+    timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(TimeOut()));
+    timer->setInterval(3000);
+    timer->start();
 }
 
 Vehicle::~Vehicle()
@@ -119,6 +125,16 @@ int Vehicle::ID()
     return id;
 }
 
+void Vehicle::setID(int id)
+{
+    this->id = id;
+}
+
+int Vehicle::Action()
+{
+    return action;
+}
+
 void Vehicle::FinishTimeAnimation()
 {
     Move();
@@ -135,6 +151,14 @@ void Vehicle::MoveTimeAnimation()
 void Vehicle::MoveVehicle(int action)
 {
     Move(action);
+    timer->stop();
+    emit ChangeStatus();
+    timer->start();
+}
+
+void Vehicle::TimeOut()
+{
+    emit ChangeStatus();
 }
 
 bool Vehicle::ReajustCollision(QGraphicsItem *item, int step)

@@ -10,6 +10,9 @@ class GameMap;
 class GameCamera;
 class Vehicle;
 class Tank;
+class GameServer;
+class GameClient;
+class GameProtocol;
 
 class GameEngine: public QObject
 {
@@ -19,13 +22,24 @@ public:
     void setCamera(GameCamera *camera);
     GameCamera *Camera();
     void InitScene(QString tmxfile);
-
-    Tank *CreateTank();
-    Vehicle *MainTank();
+    Tank *CreateTank(bool main_tank=false);
+    void setMainTank(Tank *tank);
+    Tank *MainTank();
+    void setConnection(bool is_server, QString ip, int port);
 private:
+    Tank *my_tank;
+    GameProtocol *protocol;
     GameCamera *camera;
     GameMap *scene;
-    QVector<Vehicle *> vehicles;
+    QVector<Tank *> vehicles;
+    GameServer *conn_server;
+    GameClient *conn_client;
+    QString ip;
+    int port;
+public slots:
+    void ServerInitConnection(int id);
+    void ServerReceiveMSG(int id, QByteArray array);
+    void ClientReceiveMSG(QByteArray array);
 };
 
 #endif // GAMEENGINE_H

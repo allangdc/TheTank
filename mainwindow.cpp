@@ -11,6 +11,7 @@
 #include "gameengine.h"
 #include "map/game_map.h"
 #include "vehicle/vehicle.h"
+#include "map/game_camera.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -53,6 +54,11 @@ void MainWindow::setFireProgress(int value)
 void MainWindow::setLifeProgress(int value)
 {
     ui->life_bar->setValue(value);
+}
+
+GameEngine *MainWindow::Engine()
+{
+    return engine;
 }
 
 void MainWindow::ClickLeft()
@@ -111,6 +117,7 @@ void MainWindow::keyReleaseEvent(QKeyEvent *e)
 
 void MainWindow::resizeEvent(QResizeEvent *e)
 {
+    ui->graphicsView->setCentralizeObject();
 }
 
 

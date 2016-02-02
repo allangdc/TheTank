@@ -33,6 +33,7 @@ public:
 signals:
     void sigFireValue(int value);
     void sigLifeValue(int value);
+    void ChangeStatus(bool fire);
 public slots:
     void Fire();
 private:

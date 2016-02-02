@@ -1,4 +1,4 @@
-#include "tankcontrolerbutton.h"
+#include "controller/tank_controler_button.h"
 
 #include <QEvent>
 #include <QTouchEvent>
@@ -58,6 +58,8 @@ bool TankControlerButton::event(QEvent *e)
         case QEvent::MouseButtonRelease:
             SetOFFButton();
             emit Released();
+            break;
+        default:
             break;
     }
 

@@ -24,12 +24,9 @@ void GameCamera::setCentralizeObject(QGraphicsItem *object)
         centerOn(center);
         center_point = center->pos();
     }
-    this->centerOn(center);
-//    if(animation->currentTime() == 0 || animation->currentTime() >= 1000) {
-//        animation->setStartValue(center_point);
-//        animation->setEndValue(center->pos());
-//        animation->start();
-//    }
+    if(center) {
+        this->centerOn(center);
+    }
 }
 
 void GameCamera::setCenterCamera(QPointF point)

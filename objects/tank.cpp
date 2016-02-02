@@ -54,6 +54,7 @@ Tank::~Tank()
 
 void Tank::Fire()
 {
+    emit ChangeStatus(true);
     if(fire_value == 100) {
         Bomb *bomb = new Bomb(Map(), this);
 
@@ -73,6 +74,7 @@ void Tank::Fire()
 
     animation_firebar->stop();
     animation_firebar->start();
+
 }
 
 void Tank::setFireValue(int value)
@@ -102,6 +104,7 @@ void Tank::DecLife()
     if(IsServer()) {
         if(LifeValue()>=10) {
             setLifeValue(LifeValue()-50);
+            emit ChangeStatus(false);
             if(LifeValue() <= 0)
                 deleteLater();
         }

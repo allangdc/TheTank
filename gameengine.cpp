@@ -10,11 +10,17 @@
 #include "map/game_camera.h"
 #include "vehicle/vehicle.h"
 #include "objects/tank.h"
+#include "connection/game_client.h"
+#include "connection/game_server.h"
+#include "connection/game_protocol.h"
 
 GameEngine::GameEngine(QWidget *parent)
     : QObject(parent),
       camera(NULL),
-      scene(NULL)
+      scene(NULL),
+      conn_client(NULL),
+      conn_server(NULL),
+      my_tank(NULL)
 {
 
 }
@@ -41,35 +47,99 @@ void GameEngine::InitScene(QString tmxfile)
     scene->LoadFullMap();
 
     camera->setScene(scene);
-
-    Tank *v = CreateTank();
-    MainWindow *mainwindow = reinterpret_cast<MainWindow *>(parent());
-    camera->setCentralizeObject(v);
-    connect(mainwindow, SIGNAL(MoveTankAction(int)), v, SLOT(MoveVehicle(int)));
-    connect(mainwindow, SIGNAL(TankFire()), v, SLOT(Fire()));
-    connect(v, SIGNAL(sigFireValue(int)), mainwindow, SLOT(setFireProgress(int)));
-    connect(v, SIGNAL(sigLifeValue(int)), mainwindow, SLOT(setLifeProgress(int)));
-    connect(camera, SIGNAL(Click()), v, SLOT(Fire()));
-    camera->setCentralizeObject(v);
-    v->setFireValue(100);
-    v->setLifeValue(100);
-
-    CreateTank();
 }
 
-Tank *GameEngine::CreateTank()
+Tank *GameEngine::CreateTank(bool main_tank)
 {
     static int i=0;
     Tank *v = new Tank(scene, i++);
     scene->addItem(v);
     v->setRandPos();
     v->setRandRotation();
+    vehicles.push_back(v);
+
+    if(main_tank) {
+        setMainTank(v);
+    }
+
     return v;
 }
 
-Vehicle *GameEngine::MainTank()
+void GameEngine::setMainTank(Tank *tank)
 {
-    return vehicles.at(0);
+    MainWindow *mainwindow = reinterpret_cast<MainWindow *>(parent());
+    camera->setCentralizeObject(tank);
+    connect(mainwindow, SIGNAL(MoveTankAction(int)), tank, SLOT(MoveVehicle(int)));
+    connect(mainwindow, SIGNAL(TankFire()), tank, SLOT(Fire()));
+    connect(tank, SIGNAL(sigFireValue(int)), mainwindow, SLOT(setFireProgress(int)));
+    connect(tank, SIGNAL(sigLifeValue(int)), mainwindow, SLOT(setLifeProgress(int)));
+    connect(camera, SIGNAL(Click()), tank, SLOT(Fire()));
+    camera->setCentralizeObject(tank);
+    tank->setFireValue(100);
+    tank->setLifeValue(100);
+    connect(tank, SIGNAL(ChangeStatus()), protocol, SLOT(SendMovement()));
+    connect(tank, SIGNAL(ChangeStatus(bool)), protocol, SLOT(SendMovement(bool)));
+    my_tank = tank;
+}
+
+Tank *GameEngine::MainTank()
+{
+    return my_tank;
+}
+
+void GameEngine::setConnection(bool is_server, QString ip, int port)
+{
+    if(is_server) {
+        conn_server = new GameServer(port, this);
+    } else {
+        conn_client = new GameClient(this);
+    }
+
+    protocol = new GameProtocol(scene,
+                                this,
+                                &vehicles,
+                                conn_server,
+                                conn_client,
+                                ip,
+                                port);
+    this->ip = ip;
+    this->port = port;
+
+    if(conn_server) {
+        connect(conn_server, SIGNAL(InitConnection(int)), this, SLOT(ServerInitConnection(int)));
+        connect(conn_server, SIGNAL(ReceiverMSG(int,QByteArray)), this, SLOT(ServerReceiveMSG(int,QByteArray)));
+        CreateTank(true);
+    } else if(conn_client) {
+        connect(conn_client, SIGNAL(ReceiverMSG(QByteArray)), this, SLOT(ClientReceiveMSG(QByteArray)));
+        conn_client->connectToHost(ip, port);
+        conn_client->waitForConnected();
+    }
+}
+
+void GameEngine::ServerInitConnection(int id)
+{
+    CreateTank();
+    protocol->GenerateMap();
+}
+
+void GameEngine::ServerReceiveMSG(int id, QByteArray array)
+{
+    switch (protocol->GetCode(array)) {
+        case GameProtocol::CODE_VEHICLE:
+            protocol->ReceiverTankStatus(array);
+        break;
+    }
+}
+
+void GameEngine::ClientReceiveMSG(QByteArray array)
+{
+    switch (protocol->GetCode(array)) {
+        case GameProtocol::CODE_MAP:
+            protocol->ReceiverMap(array);
+        case GameProtocol::CODE_VEHICLE:
+            protocol->ReceiverTankStatus(array);
+        break;
+    }
 }
 
 

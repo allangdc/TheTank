@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui xml
+QT       += core gui xml network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -15,7 +15,7 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     gameengine.cpp \
-    controller/tankcontrolerbutton.cpp \
+    controller/tank_controler_button.cpp \
     map/game_map.cpp \
     map/game_tile.cpp \
     map/game_tiled_set.cpp \
@@ -25,11 +25,16 @@ SOURCES += main.cpp\
     map/game_camera.cpp \
     map/game_tile_colision.cpp \
     objects/bomb.cpp \
-    objects/tank.cpp
+    objects/tank.cpp \
+    connection/game_client.cpp \
+    connection/game_server.cpp \
+    connection/game_socket.cpp \
+    connection/game_protocol.cpp \
+    connection/ipconfigdialog.cpp
 
 HEADERS  += mainwindow.h \
     gameengine.h \
-    controller/tankcontrolerbutton.h \
+    controller/tank_controler_button.h \
     map/game_map.h \
     map/game_tile.h \
     map/game_tiled_set.h \
@@ -39,9 +44,15 @@ HEADERS  += mainwindow.h \
     map/game_camera.h \
     map/game_tile_colision.h \
     objects/bomb.h \
-    objects/tank.h
+    objects/tank.h \
+    connection/game_client.h \
+    connection/game_server.h \
+    connection/game_socket.h \
+    connection/game_protocol.h \
+    connection/ipconfigdialog.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    connection/ipconfigdialog.ui
 
 CONFIG += mobility
 MOBILITY = 

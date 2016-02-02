@@ -22,7 +22,6 @@ void Bomb::Fire()
 
 bool Bomb::Reajusted()
 {
-
     bool ret = false;
     QList<QGraphicsItem *> colliding = this->collidingItems();
     QList<QGraphicsItem *>::const_iterator it;
