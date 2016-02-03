@@ -11,6 +11,7 @@
 #include "map/game_map.h"
 #include "map/game_tile_colision.h"
 #include "map/game_tile.h"
+#include "sound.h"
 
 Vehicle::Vehicle(GameMap *map)
     : QObject(),
@@ -20,7 +21,8 @@ Vehicle::Vehicle(GameMap *map)
       panimation(NULL),
       animation(NULL),
       time_animation(NULL),
-      is_alive(true)
+      is_alive(true),
+      sound_drive(NULL)
 {
     this->map = map;
 
@@ -52,6 +54,8 @@ Vehicle::Vehicle(GameMap *map)
 
 Vehicle::~Vehicle()
 {
+    if(sound_drive)
+        delete sound_drive;
     code = 0;
     if(panimation) {
         delete panimation;
@@ -281,6 +285,24 @@ bool Vehicle::IsAlive()
     return is_alive;
 }
 
+void Vehicle::PlaySoundDrive(bool can_play)
+{
+    if(sound_drive) {
+        if(can_play) {
+            if(!sound_drive->IsPlaying())
+                sound_drive->Play(true);
+        } else {
+            if(sound_drive->IsPlaying())
+                sound_drive->Stop();
+        }
+    }
+}
+
+void Vehicle::InitSound()
+{
+    sound_drive = new Sound(SOUND_DRIVE);
+}
+
 void Vehicle::LoadConnections()
 {
     connect(panimation, SIGNAL(finished()), this, SLOT(FinishTimeAnimation()));
@@ -299,6 +321,11 @@ void Vehicle::UnloadConnections()
 
 void Vehicle::StopMove()
 {
+    PlaySoundDrive(false);
+
+    if(sound_drive->IsPlaying())
+        sound_drive->Stop();
+
     if(time_animation) {
         time_animation->stop();
         animation->reset();
@@ -310,6 +337,8 @@ void Vehicle::StopMove()
 
 void Vehicle::MoveUp()
 {
+    PlaySoundDrive(true);
+
     panimation->stop();
     animation->reset();
     time_animation->stop();
@@ -325,6 +354,8 @@ void Vehicle::MoveUp()
 
 void Vehicle::RotateLeft()
 {
+    PlaySoundDrive(true);
+
     time_animation->stop();
     panimation->stop();
     panimation->setDuration(2000);
@@ -335,6 +366,8 @@ void Vehicle::RotateLeft()
 
 void Vehicle::RotateRight()
 {
+    PlaySoundDrive(true);
+
     time_animation->stop();
     panimation->stop();
     panimation->setDuration(2000);

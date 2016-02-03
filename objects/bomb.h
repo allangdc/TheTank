@@ -4,6 +4,7 @@
 #include "vehicle/vehicle.h"
 
 class Tank;
+class Sound;
 
 class Bomb : public Vehicle
 {
@@ -15,6 +16,8 @@ protected:
     virtual bool Reajusted();
 private:
     Tank *vehicle;
+    Sound *sound_fire;
+    Sound *sound_explosion;
 };
 
 #endif // BOMB_H

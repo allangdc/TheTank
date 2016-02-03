@@ -90,6 +90,16 @@ Tank *GameEngine::MainTank()
     return my_tank;
 }
 
+Tank *GameEngine::TankByID(int id)
+{
+    for(int i=0; i<vehicles.size(); i++) {
+        Tank *t = vehicles.at(i);
+        if(id == t->ID())
+            return t;
+    }
+    return false;
+}
+
 void GameEngine::setConnection(bool is_server, QString ip, int port)
 {
     if(is_server) {

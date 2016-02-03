@@ -11,7 +11,11 @@
 #define GREY_TANK            ":/tank/image/grey_tank.png"
 #define EXPLOSION            ":/tank/image/explosion.png"
 
+#define SOUND_FIRE          ":/sounds/sounds/TankFire01.wav"
+#define SOUND_EXPLOSION     ":/sounds/sounds/Explosion01.wav"
+
 class GameMap;
+class Sound;
 
 class Tank : public Vehicle
 {
@@ -30,6 +34,7 @@ public:
     int FireValue();
     int LifeValue();
     void DecLife(Tank *who_fire);
+    void DeathMe(Tank *who_fire);
     bool IsServer();
     void Died();
 
@@ -56,6 +61,8 @@ private:
     qint16 total_shots;
     qint16 total_hits;
     qint8 total_deaths;
+    Sound *sound_fire;
+    Sound *sound_explosion;
 };
 
 #endif // TANK_H

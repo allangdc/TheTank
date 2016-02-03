@@ -15,8 +15,10 @@ struct VehicleStatus {
     qint16 total_shots;
     qint16 total_hits;
     qint8 total_deaths;
+    int id_who_died_me;
     unsigned char fire      : 1;
     unsigned char action    : 3;
+    unsigned char died      : 1;
 };
 
 struct MapStatus {
@@ -50,6 +52,7 @@ public:
     void GenerateMap();
     void ReceiverMap(QByteArray array);
     void SendTankStatus(bool fire=false);
+    void SendTankDiedStatus(int tank_id);
     void ReceiverTankStatus(QByteArray array);
 public slots:
     void SendMovement();

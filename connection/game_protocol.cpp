@@ -76,6 +76,19 @@ void GameProtocol::ReceiverMap(QByteArray array)
     }
 }
 
+void GameProtocol::SendTankDiedStatus(int tank_id) {
+    struct VehicleStatus v;
+    Tank *t = engine->MainTank();
+    v = Status(t);
+    v.died = 1;
+    v.id_who_died_me = tank_id;
+    QByteArray array((char *) &v, sizeof(struct Vehicle));
+    if(conn_client)
+        conn_client->SendMessage(array);
+    else if(conn_server)
+        conn_server->BroadcastMessage(array);
+}
+
 void GameProtocol::SendTankStatus(bool fire)
 {
     struct VehicleStatus v;
@@ -136,6 +149,8 @@ VehicleStatus GameProtocol::Status(Tank *tank)
     v.total_shots = tank->getShot();
     v.total_hits = tank->getHit();
     v.total_deaths = tank->getDeath();
+    v.died = 0;
+    v.id_who_died_me = 0;
     return v;
 }
 
@@ -151,6 +166,9 @@ void GameProtocol::Status(Tank *tank, VehicleStatus vehicle)
     tank->setDeath(vehicle.total_deaths);
     if(vehicle.fire)
         tank->Fire();
+    if(vehicle.died) {
+        tank->DeathMe(engine->TankByID(vehicle.id_who_died_me));
+    }
 }
 
 unsigned char GameProtocol::GetCode(QByteArray array)

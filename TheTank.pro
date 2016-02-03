@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui xml network
+QT       += core gui xml network multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -30,7 +30,8 @@ SOURCES += main.cpp\
     connection/game_server.cpp \
     connection/game_socket.cpp \
     connection/game_protocol.cpp \
-    connection/ipconfigdialog.cpp
+    connection/ipconfigdialog.cpp \
+    sound.cpp
 
 HEADERS  += mainwindow.h \
     gameengine.h \
@@ -49,7 +50,8 @@ HEADERS  += mainwindow.h \
     connection/game_server.h \
     connection/game_socket.h \
     connection/game_protocol.h \
-    connection/ipconfigdialog.h
+    connection/ipconfigdialog.h \
+    sound.h
 
 FORMS    += mainwindow.ui \
     connection/ipconfigdialog.ui

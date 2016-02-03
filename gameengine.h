@@ -25,6 +25,7 @@ public:
     Tank *CreateTank(bool main_tank=false);
     void setMainTank(Tank *tank);
     Tank *MainTank();
+    Tank *TankByID(int id);
     void setConnection(bool is_server, QString ip, int port);
     bool IsServer();
     QString IpPort();

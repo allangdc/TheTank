@@ -6,6 +6,7 @@
 
 #include "map/game_map.h"
 #include "bomb.h"
+#include "sound.h"
 
 Tank::Tank(GameMap *map, int ColorID)
     : Vehicle(map),
@@ -48,11 +49,18 @@ Tank::Tank(GameMap *map, int ColorID)
     animation_firebar->setStartValue(0);
     animation_firebar->setEndValue(100);
     animation_firebar->setEasingCurve(QEasingCurve::Linear);
+
+    InitSound();
+
+    sound_fire = new Sound(SOUND_FIRE);
+    sound_explosion = new Sound(SOUND_EXPLOSION);
 }
 
 Tank::~Tank()
 {
     delete animation_firebar;
+    delete sound_fire;
+    delete sound_explosion;
 }
 
 void Tank::Fire()
@@ -77,6 +85,8 @@ void Tank::Fire()
 
         Map()->addItem(bomb);
         bomb->Fire();
+
+        sound_fire->Play(false);
     }
 
     animation_firebar->stop();
@@ -114,11 +124,17 @@ void Tank::DecLife(Tank *who_fire)
             setLifeValue(LifeValue()-10);
             emit ChangeStatus(false);
             if(LifeValue() <= 0) {
-                who_fire->IncDeath();
-                Died();
+                DeathMe(who_fire);
             }
         }
     }
+}
+
+void Tank::DeathMe(Tank *who_fire)
+{
+    setLifeValue(0);
+    who_fire->IncDeath();
+    Died();
 }
 
 bool Tank::IsServer()
@@ -134,6 +150,8 @@ void Tank::Died()
     QPixmap pmap = QPixmap(EXPLOSION);
     setPixmap(pmap.scaled(50, 50, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
     setTransformOriginPoint(pixmap().width()/2, pixmap().height()/2);   //define o ponto de rotação
+
+    sound_explosion->Play(false);
 }
 
 void Tank::IncShot()

@@ -17,4 +17,9 @@
         <file>image/arrow_silver.png</file>
         <file>image/tank_yellow.png</file>
     </qresource>
+    <qresource prefix="/sounds">
+        <file>sounds/Explosion01.wav</file>
+        <file>sounds/TankFire01.wav</file>
+        <file>sounds/TankMove01.wav</file>
+    </qresource>
 </RCC>

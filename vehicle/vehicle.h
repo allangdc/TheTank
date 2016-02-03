@@ -8,10 +8,13 @@
 #define VEHICLE_CODE        0xC0DE
 #define EXPLOSION_CODE      0xA1A1
 
+#define SOUND_DRIVE         ":/sounds/sounds/TankMove01.wav"
+
 class GameMap;
 class QGraphicsItemAnimation;
 class QPropertyAnimation;
 class QTimeLine;
+class Sound;
 
 class Vehicle : public QObject, public QGraphicsPixmapItem
 {
@@ -51,6 +54,8 @@ protected:
     GameMap *Map();
     void setAlive(bool value);
     bool IsAlive();
+    void PlaySoundDrive(bool can_play);
+    void InitSound();
 private:
     void LoadConnections();
     void UnloadConnections();
@@ -69,6 +74,7 @@ private:
     QTimeLine *time_animation;
     QTimer *timer;
     bool is_alive;
+    Sound *sound_drive;
 };
 
 
