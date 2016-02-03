@@ -38,6 +38,11 @@ MainWindow::MainWindow(QWidget *parent) :
     engine = new GameEngine(this);
     engine->setCamera(ui->graphicsView);
     engine->InitScene(":/map/map_tank.tmx");
+
+    ui->summary->setVisible(false);
+    ui->summary->setText("Tanque\tDisparo\tAcerto\tMorte");
+
+    connect(ui->toolButton, SIGNAL(pressed()), this, SLOT(SwapSummary()));
 }
 
 MainWindow::~MainWindow()
@@ -53,6 +58,33 @@ void MainWindow::setFireProgress(int value)
 void MainWindow::setLifeProgress(int value)
 {
     ui->life_bar->setValue(value);
+}
+
+void MainWindow::SwapSummary()
+{
+    if(ui->summary->isVisible()) {
+        ui->summary->setVisible(false);
+        ui->graphicsView->setVisible(true);
+    } else {
+        engine->FillSummary();
+        ui->summary->setVisible(true);
+        ui->graphicsView->setVisible(false);
+    }
+}
+
+void MainWindow::ClearSummary()
+{
+    ui->summary->setText("Tanque\tDisparo\tAcerto\tMorte");
+}
+
+void MainWindow::AddSummary(QString tank, int shot, int hit, int death)
+{
+    QString str = ui->summary->text();
+    str += "\n" + QString("%1\t%2\t%3\t%4").arg(tank)
+                                           .arg(shot)
+                                           .arg(hit)
+                                           .arg(death);
+    ui->summary->setText(str);
 }
 
 GameEngine *MainWindow::Engine()
@@ -99,6 +131,8 @@ void MainWindow::keyPressEvent(QKeyEvent *e)
             ClickRight();
         else if(e->key() == Qt::Key_Up)
             ClickUp();
+        else if(e->key() == Qt::Key_Back || e->key() == Qt::Key_Escape)
+            close();
     }
 }
 

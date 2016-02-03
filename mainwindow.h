@@ -17,6 +17,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     GameEngine *Engine();
+    void ClearSummary();
+    void AddSummary(QString tank, int shot, int hit, int death);
 public slots:
     void ClickLeft();
     void ReleaseLeftRight();
@@ -26,6 +28,7 @@ public slots:
     void ReleaseUp();
     void setFireProgress(int value);
     void setLifeProgress(int value);
+    void SwapSummary();
 signals:
     void MoveTankAction(int code);
     void TankFire();

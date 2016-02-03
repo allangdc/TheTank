@@ -28,6 +28,7 @@ public:
     void setConnection(bool is_server, QString ip, int port);
     bool IsServer();
     QString IpPort();
+    void FillSummary();
 private:
     Tank *my_tank;
     GameProtocol *protocol;

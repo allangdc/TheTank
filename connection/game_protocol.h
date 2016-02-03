@@ -36,7 +36,7 @@ class GameProtocol: public QObject
     Q_OBJECT
 public:
     enum code {
-        CODE_MAP, CODE_VEHICLE
+        CODE_MAP, CODE_VEHICLE, CODE_EXIT
     };
 
     GameProtocol(GameMap *map,

@@ -22,7 +22,6 @@ GameEngine::GameEngine(QWidget *parent)
       conn_server(NULL),
       my_tank(NULL)
 {
-
 }
 
 void GameEngine::setCamera(GameCamera *camera)
@@ -128,6 +127,16 @@ bool GameEngine::IsServer()
 QString GameEngine::IpPort()
 {
     return QString("%1:%2").arg(ip).arg(port);
+}
+
+void GameEngine::FillSummary()
+{
+    MainWindow *w = reinterpret_cast<MainWindow *>(parent());
+    w->ClearSummary();
+    for(int i=0; i<vehicles.size(); i++) {
+        Tank *t = vehicles.at(i);
+        w->AddSummary(QString("%1").arg(i), t->getShot(), t->getHit(), t->getDeath());
+    }
 }
 
 void GameEngine::ServerInitConnection(int id)

@@ -3,6 +3,7 @@
 
 #include <QDebug>
 #include <QTcpSocket>
+#include <qiterator.h>
 
 GameServer::GameServer(int port, QObject *parent) : QTcpServer(parent)
 {
@@ -39,15 +40,20 @@ void GameServer::SendMessage(int id, QByteArray data)
 
 void GameServer::BroadcastMessage(QByteArray data)
 {
+    static int line = 0;
+    int i = 0;
     for(QVector<GameSocket *>::iterator it = sockets.begin();
                                         it != sockets.end();
                                         it++) {
         GameSocket *game_socket = *it;
         QTcpSocket *socket = game_socket->getSocket();
-        socket->write(data);
-        socket->flush();
-        socket->waitForBytesWritten();
+        if(socket->isOpen()) {
+            socket->write(data);
+            socket->flush();
+            socket->waitForBytesWritten();
+        }
     }
+    qDebug() << "Line:" << ++line << "Total Socket:" << sockets.size();
 }
 
 int GameServer::NumConnections()
