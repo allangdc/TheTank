@@ -15,7 +15,8 @@ Tank::Tank(GameMap *map, int ColorID)
       life_value(100),
       total_deaths(0),
       total_shots(0),
-      total_hits(0)
+      total_hits(0),
+      my_killer(NULL)
 {
     QPixmap pmap;
     switch (ColorID) {
@@ -133,7 +134,9 @@ void Tank::DecLife(Tank *who_fire)
 void Tank::DeathMe(Tank *who_fire)
 {
     setLifeValue(0);
-    who_fire->IncDeath();
+    if(who_fire)
+        who_fire->IncDeath();
+    my_killer = who_fire;
     Died();
 }
 
@@ -197,6 +200,11 @@ void Tank::setHit(qint16 value)
 void Tank::setDeath(qint8 value)
 {
     total_deaths = value;
+}
+
+Tank *Tank::MyKiller()
+{
+    return my_killer;
 }
 
 

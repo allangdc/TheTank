@@ -52,7 +52,7 @@ Tank *GameEngine::CreateTank(bool main_tank)
 {
     static int i=0;
     if(i>=5)
-        i=0;
+        return NULL;
     Tank *v = new Tank(scene, i++);
     scene->addItem(v);
     v->setRandPos();
@@ -145,7 +145,26 @@ void GameEngine::FillSummary()
     w->ClearSummary();
     for(int i=0; i<vehicles.size(); i++) {
         Tank *t = vehicles.at(i);
-        w->AddSummary(QString("%1").arg(i), t->getShot(), t->getHit(), t->getDeath());
+        QString name;
+        switch (i) {
+        case Tank::YELLOW:
+            name = "yellow";
+            break;
+        case Tank::RED:
+            name = "red";
+            break;
+        case Tank::BLUE:
+            name = "blue";
+            break;
+        case Tank::GREEN:
+            name = "green";
+            break;
+        case Tank::GREY:
+        default:
+            name = "black";
+            break;
+        }
+        w->AddSummary(QString("%1").arg(name), t->getShot(), t->getHit(), t->getDeath());
     }
 }
 

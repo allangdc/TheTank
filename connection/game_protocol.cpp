@@ -33,6 +33,10 @@ void GameProtocol::GenerateMap()
         struct VehicleStatus *vehicle_status = &(map.status[i]);
         Tank *v = vehicles->at(i);
         *vehicle_status = Status(v);
+        if(!v->IsAlive()) {
+            vehicle_status->died = 1;
+            vehicle_status->id_who_died_me = v->MyKiller()->ID();
+        }
     }
     QByteArray array((char *) &map, sizeof(struct MapStatus));
     conn_server->BroadcastMessage(array);

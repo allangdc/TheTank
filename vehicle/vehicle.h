@@ -40,6 +40,7 @@ public:
     int ID();
     void setID(int id);
     int Action();
+    bool IsAlive();
 signals:
     void ChangeStatus();
 public slots:
@@ -53,7 +54,6 @@ protected:
     virtual bool Reajusted();
     GameMap *Map();
     void setAlive(bool value);
-    bool IsAlive();
     void PlaySoundDrive(bool can_play);
     void InitSound();
 private:

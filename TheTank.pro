@@ -8,7 +8,7 @@ QT       += core gui xml network multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = TheTank
+TARGET = SmartGame
 TEMPLATE = app
 
 

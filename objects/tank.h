@@ -47,6 +47,7 @@ public:
     void setShot(qint16 value);
     void setHit(qint16 value);
     void setDeath(qint8 value);
+    Tank *MyKiller();
 signals:
     void sigFireValue(int value);
     void sigLifeValue(int value);
@@ -63,6 +64,7 @@ private:
     qint8 total_deaths;
     Sound *sound_fire;
     Sound *sound_explosion;
+    Tank *my_killer;
 };
 
 #endif // TANK_H
